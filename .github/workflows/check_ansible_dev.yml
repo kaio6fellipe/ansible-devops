@@ -1,0 +1,36 @@
+name: Check Ansible directory (Development)
+
+on: 
+  pull_request:
+    branches: [development]
+
+jobs:
+  plan:
+    name: 'ansible check'
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        shell: bash
+        working-directory: .
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install yaml Linter
+        run: sudo apt-get install yamllint -y
+
+      - name: Lint yaml
+        working-directory: .
+        run: find . -name '*.yaml' | xargs yamllint
+
+      - name: Run anbible-lint
+        uses: ansible-community/ansible-lint-action@main
+
+      - name: Install Ansible
+        run: sudo apt install ansible -y
+
+      - name: Run playbook check
+        working-directory: .
+        uses: ansible-playbook playbooks/*.yaml --check
