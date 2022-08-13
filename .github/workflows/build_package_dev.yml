@@ -1,0 +1,42 @@
+name: Build and Package (Development)
+
+on:
+  workflow_dispatch: {}
+    branches: [development]
+
+env:
+  AWS_REGION: us-east-1
+  S3BUCKET: codepipeline-ansible-ktech-br-dev
+
+
+jobs:
+  build:
+    name: Build and Package
+    runs-on: ubuntu-20.04
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout Repository
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+          role-session-name: GitHub-Action-Role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install zip
+        run: sudo apt-get install -y zip unzip
+
+      - name: chmod
+        run: chmod -R +x ./.github
+
+      - name: Build and Package Ansible
+        id: package
+        working-directory: .
+        run: $GITHUB_WORKSPACE/.github/scripts/build.sh
+
+      - name: Upload Artifact to s3
+        working-directory: .
+        run: aws s3 cp *.zip s3://${{ env.S3BUCKET }}/deploy/
