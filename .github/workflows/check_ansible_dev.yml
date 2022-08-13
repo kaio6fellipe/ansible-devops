@@ -33,4 +33,4 @@ jobs:
 
       - name: Run playbook check
         working-directory: .
-        uses: ansible-playbook playbooks/*.yaml --check
+        run: ansible-playbook playbooks/*.yaml --check
