@@ -2,4 +2,4 @@
     - all
   tasks:
     - name: Ping all hosts
-      action: ping
+      action: ansible.builtin.ping

@@ -24,11 +24,9 @@ jobs:
       - name: Lint yaml
         working-directory: .
         run: find . -name '*.yaml' | xargs yamllint
-        continue-on-error: true
 
       - name: Run anbible-lint
         uses: ansible-community/ansible-lint-action@main
-        continue-on-error: true
 
       - name: Install Ansible
         run: sudo apt install ansible -y
