@@ -2,19 +2,19 @@ name: Build and Package (Development)
 
 on:
   workflow_dispatch:
-    branches: [development]
 
 env:
-  AWS_REGION: us-east-1
-  S3BUCKET: codepipeline-ansible-ktech-br-dev
+  AWS_REGION: "us-east-1"
+  S3BUCKET: "codepipeline-ansible-ktech-br-dev"
+  
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build:
     name: Build and Package
     runs-on: ubuntu-20.04
-    permissions:
-      id-token: write
-      contents: read
     steps:
       - uses: actions/checkout@v2
         name: Checkout Repository
