@@ -1,6 +1,8 @@
 name: Build and Package (Development)
 
 on:
+  push:
+      branches: [development]
   workflow_dispatch:
 
 env:
