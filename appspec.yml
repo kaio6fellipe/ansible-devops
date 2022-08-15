@@ -2,9 +2,13 @@ version: 0.0
 os: linux
 files:
   - source: .
-    destination: /home/ec2-user/ansible/
+    destination: /etc/ansible/
 hooks:
   BeforeInstall:
     - location: aws/scripts/before-install.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: aws/scripts/after-install.sh
       timeout: 300
       runas: root

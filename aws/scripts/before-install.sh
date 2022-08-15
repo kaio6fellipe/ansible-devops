@@ -2,8 +2,8 @@
 set -xe
 
 # Delete the old  directory as needed. /home/ec2-user/ansible/
-if [ -d /home/ec2-user/ansible ]; then
-    rm -rf /home/ec2-user/ansible/
+if [ -d /etc/ansible ]; then
+    rm -rf /etc/ansible/
 fi
 
-mkdir -vp /home/ec2-user/ansible
+mkdir -vp /etc/ansible
