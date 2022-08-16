@@ -7,14 +7,14 @@ regions:
   - us-east-1
 
 filters:
-  tag:env: staging
+  tag:Env: staging
 
 keyed_groups:
-  - key: tags.env
+  - key: tags.Env
     separator: ""
-  - key: tags.type
+  - key: tags.App
     separator: ""
-    parent_group: "{{ tags.env }}"
+    parent_group: "{{ tags.Env }}"
 
 hostnames:
   - private-ip-address
