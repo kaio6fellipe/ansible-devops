@@ -7,9 +7,10 @@ loop_var_prefix: "{role}_"
 
 use_default_rules: true
 
-skip_list:  # or 'skip_list' to silence them completely
-  - fqcn-builtins  # Use FQCN for builtin actions.
+skip_list:
+  - fqcn-builtins
   - yaml[new-line-at-end-of-file]
+  - yaml[line-length]
 
 enable_list:
   - empty-string-compare # opt-in
