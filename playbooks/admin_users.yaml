@@ -5,21 +5,27 @@
     - name: Create root user on hosts
       ansible.builtin.user:
         name: kaio.fellipe
-        group: root
+        group: wheel
     - name: Make dir
       ansible.builtin.file:
         path: "/home/kaio.fellipe/.ssh"
+        owner: kaio.fellipe
+        group: wheel
+        mode: 0700
         state: directory
     - name: Create empty file
       ansible.builtin.file:
         path: "/home/kaio.fellipe/.ssh/authorized_keys"
+        owner: kaio.fellipe
+        group: wheel
+        mode: 0600
         state: touch
     - name: Copy public key
       ansible.builtin.lineinfile:
         path: "/home/kaio.fellipe/.ssh/authorized_keys"
-        line: "\u0027ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCf/eSmLtj7czYO2U4
-        YmdNVzHuG7zWoqQB0SXCQF8tlnCHvVhYiTayzVQA0cnnYdnYEd5rPfZqhqovyxuv4d0M3jC5Qvqm4V9
-        9WsvQPKPu6U9YEI2NGU8xOtEPFAldHlIVYWHMAIbKqmGqL3q1dZ0J+Lql1K7/+tdr8Ds0qhRji8DfIz
-        s+qznzsb74lXzGGFljxDw2Q6BOTQSoKWX3cta3pIINAjgimAw4dVL0Ks+adzncvtukBqAdCt86917Md
-        W1KVTAg21QI9tE8VYakSKmyETQ3IB9maC+W7+Ci8PWR6vW7HY9DrtnZwNpzb4iitx2Lo8wj8pSc45uq
-        GihUoVYf kaio.fellipe@200012-sp-nb\u0027\n"
+        line: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCf/eSmLtj7czYO2U4YmdNVzH\
+        uG7zWoqQB0SXCQF8tlnCHvVhYiTayzVQA0cnnYdnYEd5rPfZqhqovyxuv4d0M3jC5Qvqm4\
+        V99WsvQPKPu6U9YEI2NGU8xOtEPFAldHlIVYWHMAIbKqmGqL3q1dZ0J+Lql1K7/+tdr8Ds\
+        0qhRji8DfIzs+qznzsb74lXzGGFljxDw2Q6BOTQSoKWX3cta3pIINAjgimAw4dVL0Ks+ad\
+        zncvtukBqAdCt86917MdW1KVTAg21QI9tE8VYakSKmyETQ3IB9maC+W7+Ci8PWR6vW7HY9\
+        DrtnZwNpzb4iitx2Lo8wj8pSc45uqGihUoVYf kaio.fellipe@200012-sp-nb\n"
