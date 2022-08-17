@@ -18,12 +18,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install yaml Linter
-        run: sudo apt-get install yamllint -y
+      #- name: Install yaml Linter
+      #  run: sudo apt-get install yamllint -y
 
-      - name: Lint yaml
-        working-directory: .
-        run: find . -name '*.yaml' | xargs yamllint
+      #- name: Lint yaml
+      #  working-directory: .
+      #  run: find . -name '*.yaml' | xargs yamllint
 
       - name: Run anbible-lint
         uses: ansible-community/ansible-lint-action@main
