@@ -6,7 +6,18 @@
       ansible.builtin.user:
         name: kaio.fellipe
         group: root
-        ssh_public_key: "\u0027ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCf/eSmLtj7czYO2U4
+    - name: Make dir
+      ansible.builtin.file:
+        path: "/home/kaio.fellipe/.ssh"
+        state: directory
+    - name: Create empty file
+      ansible.builtin.file:
+        path: "/home/kaio.fellipe/.ssh/authorized_keys"
+        state: touch
+    - name: Copy public key
+      ansible.builtin.lineinfile:
+        path: "/home/kaio.fellipe/.ssh/authorized_keys"
+        line: "\u0027ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCf/eSmLtj7czYO2U4
         YmdNVzHuG7zWoqQB0SXCQF8tlnCHvVhYiTayzVQA0cnnYdnYEd5rPfZqhqovyxuv4d0M3jC5Qvqm4V9
         9WsvQPKPu6U9YEI2NGU8xOtEPFAldHlIVYWHMAIbKqmGqL3q1dZ0J+Lql1K7/+tdr8Ds0qhRji8DfIz
         s+qznzsb74lXzGGFljxDw2Q6BOTQSoKWX3cta3pIINAjgimAw4dVL0Ks+adzncvtukBqAdCt86917Md
