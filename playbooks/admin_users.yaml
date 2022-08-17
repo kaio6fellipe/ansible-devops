@@ -20,6 +20,12 @@
         group: wheel
         mode: 0600
         state: touch
+    - name: Empty authorized_keys file before copy
+      ansible.builtin.shell:
+        cmd: echo > /home/kaio.fellipe/.ssh/authorized_keys
+        removes: /home/kaio.fellipe/.ssh/authorized_keys
+        args:
+          executable: /bin/bash
     - name: Copy public key
       ansible.builtin.lineinfile:
         path: "/home/kaio.fellipe/.ssh/authorized_keys"
