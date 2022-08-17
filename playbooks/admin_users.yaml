@@ -2,7 +2,7 @@
     - all
   become: true
   tasks:
-    - name: Create root user on hosts
+    - name: Create root user kaio.fellipe on hosts
       ansible.builtin.user:
         name: kaio.fellipe
         group: wheel
