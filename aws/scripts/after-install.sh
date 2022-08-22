@@ -1,6 +1,8 @@
 #!/bin/bash
 set -xe
 
+mkdir /etc/ansible/log
+touch /etc/ansible/log/executions.log
 chown -R ec2-user:ec2-user /etc/ansible
 
 if [ -f /etc/crontab ]; then
