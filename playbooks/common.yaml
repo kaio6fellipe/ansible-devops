@@ -1,9 +1,11 @@
 - hosts:
     - all
   become: true
-  roles:
-    - role: '../roles/common'
+  tasks:
+    - name: Common role
+      loop: "{{ admin_users }}"
+      ansible.builtin.include_role:
+        name: '../roles/common'
       vars:
         user: "{{ item.user }}"
         pub_rsa: "{{ item.pub_rsa }}"
-      loop: "{{ admin_users | dict2items }}"
