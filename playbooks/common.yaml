@@ -4,6 +4,6 @@
   roles:
     - role: '../roles/common'
       vars:
-        user: "{{ item.key }}"
-        pub_rsa: "{{ item.value }}"
+        user: "{{ item.user }}"
+        pub_rsa: "{{ item.pub_rsa }}"
       loop: "{{ admin_users | dict2items }}"
