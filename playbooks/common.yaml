@@ -2,7 +2,7 @@
     - all
   become: true
   roles:
-    - role: common
+    - role: '../roles/common'
       vars:
         user: "{{ item.key }}"
         pub_rsa: "{{ item.value }}"
