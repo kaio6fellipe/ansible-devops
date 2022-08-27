@@ -1,0 +1,13 @@
+- name: Change sudoers file to NOPASS on group wheel # noqa: no-tabs
+  ansible.builtin.lineinfile:
+    path: "/etc/sudoers"
+    regexp: '^(.*)# %wheel	ALL=\(ALL\)	NOPASSWD: ALL(.*)$'
+    line: '%wheel	ALL=(ALL)	NOPASSWD: ALL'
+    backrefs: yes # noqa: yaml[truthy]
+
+- name: Comment line in sudoers file on group wheel # noqa: no-tabs
+  ansible.builtin.lineinfile:
+    path: "/etc/sudoers"
+    regexp: '^%wheel	ALL=\(ALL\)	ALL(.*)$'
+    line: '# %wheel	ALL=(ALL)	ALL'
+    backrefs: yes # noqa: yaml[truthy]

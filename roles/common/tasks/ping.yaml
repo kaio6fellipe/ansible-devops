@@ -1,0 +1,2 @@
+- name: Ping all hosts
+  action: ansible.builtin.ping

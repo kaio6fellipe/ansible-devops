@@ -1,0 +1,31 @@
+- name: Create root user "{{ user }}" on hosts
+  ansible.builtin.user:
+    name: "{{ user }}"
+    group: wheel
+
+- name: Make dir
+  ansible.builtin.file:
+    path: "/home/{{ user }}/.ssh"
+    owner: "{{ user }}"
+    group: wheel
+    mode: 0700
+    state: directory
+
+- name: Create empty file
+  ansible.builtin.file:
+    path: "/home/{{ user }}/.ssh/authorized_keys"
+    owner: "{{ user }}"
+    group: wheel
+    mode: 0600
+    state: touch
+
+- name: Empty authorized_keys file before copy
+  ansible.builtin.shell:
+    cmd: echo > /home/"{{ user }}"/.ssh/authorized_keys
+    removes: /home/"{{ user }}"/.ssh/authorized_keys
+    executable: /bin/bash
+
+- name: Copy public key
+  ansible.builtin.lineinfile:
+    path: "/home/{{ user }}/.ssh/authorized_keys"
+    line: "{{ pub_rsa }}"

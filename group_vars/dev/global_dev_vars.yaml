@@ -1,3 +1,12 @@
 ---
 ansible_ssh_private_key_file: "/home/ec2-user/.ssh/terraform-aws-dev"
 ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+
+admin_users:
+  - user: kaio.fellipe
+    pub_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCf/eSmLtj7czYO2U4YmdNVzH\
+    uG7zWoqQB0SXCQF8tlnCHvVhYiTayzVQA0cnnYdnYEd5rPfZqhqovyxuv4d0M3jC5Qvqm4\
+    V99WsvQPKPu6U9YEI2NGU8xOtEPFAldHlIVYWHMAIbKqmGqL3q1dZ0J+Lql1K7/+tdr8Ds\
+    0qhRji8DfIzs+qznzsb74lXzGGFljxDw2Q6BOTQSoKWX3cta3pIINAjgimAw4dVL0Ks+ad\
+    zncvtukBqAdCt86917MdW1KVTAg21QI9tE8VYakSKmyETQ3IB9maC+W7+Ci8PWR6vW7HY9\
+    DrtnZwNpzb4iitx2Lo8wj8pSc45uqGihUoVYf kaio.fellipe@200012-sp-nb\n"
