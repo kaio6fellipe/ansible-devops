@@ -1,0 +1,9 @@
+- hosts:
+    - all
+  become: true
+  roles:
+    - role: common
+      vars:
+        user: "{{ item.key }}"
+        pub_rsa: "{{ item.value }}"
+      loop: "{{ admin_users | dict2items }}"
