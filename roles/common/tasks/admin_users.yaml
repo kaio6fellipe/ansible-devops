@@ -1,4 +1,4 @@
-- name: Create root user "{{ user }}" on hosts
+- name: Create root user
   ansible.builtin.user:
     name: "{{ user }}"
     group: wheel
