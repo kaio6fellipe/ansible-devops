@@ -21,7 +21,7 @@
 
 - name: Empty authorized_keys file before copy
   ansible.builtin.shell:
-    cmd: echo > /home/"{{ user }}"/.ssh/authorized_keys
+    cmd: echo > /home/{{ user }}/.ssh/authorized_keys
     removes: /home/"{{ user }}"/.ssh/authorized_keys
     executable: /bin/bash
 
