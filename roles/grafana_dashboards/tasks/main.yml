@@ -1,0 +1,18 @@
+- name: Download Grafana 9.1.2 file with check (sha256)
+  ansible.builtin.get_url:
+    mode: 0755
+    url: https://dl.grafana.com/oss/release/grafana-9.1.2-1.x86_64.rpm
+    dest: /tmp/grafana_dashboards/grafana-9.1.2-1.x86_64.rpm
+    checksum: sha256:479a338c86af65b5297c564b53dee4e59213fb4b51a8182be1e8020b48aca846
+
+- name: Install grafana
+  ansible.builtin.yum:
+    name: /tmp/grafana_dashboards/grafana-9.1.2-1.x86_64.rpm
+    state: present
+
+- name: Enable and start Grafana service
+  ansible.builtin.systemd:
+    name: grafana-server
+    enabled: yes # noqa: yaml[truthy]
+    state: started
+    daemon_reload: yes # noqa: yaml[truthy]
