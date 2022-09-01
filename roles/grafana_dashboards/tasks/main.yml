@@ -1,3 +1,9 @@
+- name: Make dir
+  ansible.builtin.file:
+    path: "/tmp/grafana_dashboards"
+    mode: 0755
+    state: directory
+
 - name: Download Grafana 9.1.2 file with check (sha256)
   ansible.builtin.get_url:
     mode: 0755
