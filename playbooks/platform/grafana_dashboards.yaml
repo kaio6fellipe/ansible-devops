@@ -1,5 +1,5 @@
 - hosts:
-    - all
+    - grafana-dashboards
   become: true
   roles:
     - role: '../../roles/grafana_dashboards'
