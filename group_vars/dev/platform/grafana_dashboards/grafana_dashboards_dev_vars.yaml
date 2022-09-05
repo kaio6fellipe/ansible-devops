@@ -1,2 +1,2 @@
 ---
-grafana_rds_password: {{ vault_grafana_rds_password }}
+grafana_rds_password: "{{ vault_grafana_rds_password }}"
