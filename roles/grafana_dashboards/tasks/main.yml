@@ -16,6 +16,14 @@
     name: /tmp/grafana_dashboards/grafana-9.1.2-1.x86_64.rpm
     state: present
 
+- name: Replace grafana.ini with template
+  ansible.builtin.template:
+    src: grafana.ini
+    dest: /etc/grafana/grafana.ini
+    owner: root
+    group: grafana
+    mode: 0640
+
 - name: Enable and start Grafana service
   ansible.builtin.systemd:
     name: grafana-server
