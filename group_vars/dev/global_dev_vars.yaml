@@ -12,4 +12,4 @@ admin_users:
     zncvtukBqAdCt86917MdW1KVTAg21QI9tE8VYakSKmyETQ3IB9maC+W7+Ci8PWR6vW7HY9\
     DrtnZwNpzb4iitx2Lo8wj8pSc45uqGihUoVYf kaio.fellipe@200012-sp-nb\n"
   - user: teste
-    pub_rsa: "teste"
+    pub_rsa: "ssh-rsa AHEUAHEUAHUEHAUEHAUE teste@teste"

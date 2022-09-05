@@ -1,0 +1,2 @@
+---
+grafana_rds_password: {{ vault_grafana_rds_password }}
