@@ -1,0 +1,5 @@
+- hosts:
+    - grafana_loki
+  become: true
+  roles:
+    - role: '../../roles/grafana_loki'
