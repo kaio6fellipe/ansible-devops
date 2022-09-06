@@ -18,6 +18,7 @@
 
 - name: Replace grafana.ini with template
   ansible.builtin.template:
+    no_log: True # noqa: yaml[truthy]
     src: grafana.ini
     dest: /etc/grafana/grafana.ini
     owner: root
