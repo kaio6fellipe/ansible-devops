@@ -1,6 +1,5 @@
 ---
-handlers:
-  - name: Restart Grafana Server
-    ansible.builtin.service:
-      name: grafana-server
-      state: restarted
+- name: Restart Grafana Server
+  ansible.builtin.service:
+    name: grafana-server
+    state: restarted
