@@ -1,0 +1,8 @@
+---
+# curl -O -L "https://github.com/grafana/loki/releases/download/v2.6.1/loki-linux-amd64.zip"
+# unzip "loki-linux-amd64.zip"
+# chmod a+x "loki-linux-amd64"
+# ./loki-linux-amd64 -config.file=loki-local-config.yaml
+# sudo useradd --system loki
+# chown -R loki:loki /tmp/loki
+# sudo vim /etc/systemd/system/loki.service
