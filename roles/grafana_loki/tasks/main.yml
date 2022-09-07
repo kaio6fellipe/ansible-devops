@@ -6,3 +6,62 @@
 # sudo useradd --system loki
 # chown -R loki:loki /tmp/loki
 # sudo vim /etc/systemd/system/loki.service
+
+- name: Add the user loki to run the service
+  ansible.builtin.user:
+    name: loki
+    shell: /bin/bash
+    group: root
+    system: yes # noqa: yaml[truthy]
+    state: present
+
+- name: Make loki tmp dir
+  ansible.builtin.file:
+    path: "/tmp/loki"
+    mode: 0755
+    owner: loki
+    group: root
+    state: directory
+
+- name: Make loki etc dir
+  ansible.builtin.file:
+    path: "/etc/loki"
+    mode: 0755
+    owner: loki
+    group: root
+    state: directory
+
+- name: Download Loki 2.6.1
+  ansible.builtin.get_url:
+    mode: 0755
+    url: https://github.com/grafana/loki/releases/download/v2.6.1/loki-linux-amd64.zip
+    dest: /tmp/loki/loki-linux-amd64.zip
+
+- name: Extract Loki 2.6.1
+  ansible.builtin.unarchive:
+    src: /tmp/loki/loki-linux-amd64.zip
+    dest: /usr/local/bin
+    owner: loki
+    group: root
+    mode: 0550
+
+- name: Permissions to execute the loki binary
+  ansible.builtin.file:
+    dest: /usr/local/bin/loki-linux-amd64
+    mode: a+x
+
+- name: Setup Loki template config file on /etc/loki
+  ansible.builtin.template:
+    src: loki-local-config.yaml
+    dest: /etc/loki/loki-local-config.yaml
+    owner: loki
+    group: root
+    mode: 0640
+
+- name: Setup Loki Service on /etc/systemd/system
+  ansible.builtin.template:
+    src: loki.service
+    dest: /etc/systemd/system/loki.service
+    owner: loki
+    group: root
+    mode: 0640
