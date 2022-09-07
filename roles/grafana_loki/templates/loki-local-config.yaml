@@ -2,19 +2,6 @@ auth_enabled: false
 
 server:
   http_listen_port: 3100
-  grpc_listen_port: 9096
-
-common:
-  path_prefix: /tmp/loki
-  storage:
-    filesystem:
-      chunks_directory: /tmp/loki/chunks
-      rules_directory: /tmp/loki/rules
-  replication_factor: 1
-  ring:
-    instance_addr: 127.0.0.1
-    kvstore:
-      store: inmemory
 
 # query_range:
 #   results_cache:
@@ -24,28 +11,62 @@ common:
 #         distributed: false
 #         max_size_mb: 100
 
-storage_config:
-  boltdb_shipper:
-    active_index_directory: /loki/boltdb-shipper-active
-    cache_location: /loki/boltdb-shipper-cache
-    cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
-    shared_store: s3
-  aws:
-    s3: s3://us-east-1
-    bucketnames: loki-bucket-ktech-br-{{ deploy_environment }}
+ingester:
+  wal:
+    enabled: true
+    dir: /tmp/loki/wal
+  lifecycler:
+    address: 127.0.0.1
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+    final_sleep: 0s
+  chunk_idle_period: 5m
+  chunk_retain_period: 30s
+  max_transfer_retries: 0
 
 schema_config:
   configs:
     - from: 2020-07-01
       store: boltdb-shipper
-      object_store: aws
+      object_store: s3
       schema: v11
       index:
-        prefix: index_
+        prefix: loki_index_
         period: 24h
 
-ruler:
-  alertmanager_url: http://localhost:9093
+compactor:
+  working_directory: /tmp/loki/boltdb-shipper-compactor
+  shared_store: s3
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /tmp/loki/boltdb-shipper-active
+    cache_location: /tmp/loki/boltdb-shipper-cache
+    # cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
+    shared_store: s3
+  aws:
+    s3: s3://us-east-1/loki-bucket-ktech-br-{{ deploy_environment }}
+    s3forcepathstyle: true
+    # sse_encryption: true
+
+limits_config:
+  ingestion_rate_mb: 16
+  ingestion_burst_size_mb: 20
+  enforce_metric_name: false
+  reject_old_samples: false
+  reject_old_samples_max_age: 504h
+
+table_manager:
+  retention_deletes_enabled: false
+  retention_period: 0s
+
+chunk_store_config:
+  max_look_back_period: 0s
+
+# ruler:
+#   alertmanager_url: http://localhost:9093
 
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
 # analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
