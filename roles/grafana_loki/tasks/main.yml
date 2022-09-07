@@ -31,19 +31,14 @@
     group: root
     state: directory
 
-- name: Download Loki 2.6.1
-  ansible.builtin.get_url:
-    mode: 0755
-    url: https://github.com/grafana/loki/releases/download/v2.6.1/loki-linux-amd64.zip
-    dest: /tmp/loki/loki-linux-amd64.zip
-
-- name: Extract Loki 2.6.1
+- name: Download and extract Loki 2.6.1
   ansible.builtin.unarchive:
-    src: /tmp/loki/loki-linux-amd64.zip
+    src: https://github.com/grafana/loki/releases/download/v2.6.1/loki-linux-amd64.zip
     dest: /usr/local/bin
     owner: loki
     group: root
     mode: 0550
+    remote_src: yes # noqa: yaml[truthy]
 
 - name: Permissions to execute the loki binary
   ansible.builtin.file:
@@ -57,6 +52,8 @@
     owner: loki
     group: root
     mode: 0640
+  notify:
+    - Restart Loki
 
 - name: Setup Loki Service on /etc/systemd/system
   ansible.builtin.template:
@@ -65,3 +62,11 @@
     owner: loki
     group: root
     mode: 0640
+
+- name: Start Loki Service
+  ansible.builtin.service:
+    name: loki
+    enabled: yes # noqa: yaml[truthy]
+    state: started
+
+# Ajustar o loki config para utilizar o S3 configurado
