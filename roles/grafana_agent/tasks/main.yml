@@ -7,3 +7,57 @@
 # make sure it is executable
 # chmod a+x "agent-linux-amd64"
 # http://loki-alb.dev.private.ktech-br.com
+
+- name: Add the user grafana-agent to run the service
+  ansible.builtin.user:
+    name: grafana_agent
+    shell: /bin/bash
+    group: root
+    system: yes # noqa: yaml[truthy]
+    state: present
+
+- name: Make grafana_agent etc dir
+  ansible.builtin.file:
+    path: "/etc/grafana_agent"
+    mode: 0755
+    owner: grafana_agent
+    group: root
+    state: directory
+
+- name: Download and extract Grafana Agent 0.27.0
+  ansible.builtin.unarchive:
+    src: https://github.com/grafana/agent/releases/download/v0.27.0/agent-linux-amd64.zip
+    dest: /usr/local/bin
+    owner: grafana_agent
+    group: root
+    mode: 0550
+    remote_src: yes # noqa: yaml[truthy]
+
+- name: Permissions to execute the grafana-agent binary
+  ansible.builtin.file:
+    dest: /usr/local/bin/agent-linux-amd64
+    mode: a+x
+
+- name: Setup Grafana agent template config file on /etc/grafana_agent
+  ansible.builtin.template:
+    src: grafana-agent-config.yaml
+    dest: /etc/grafana_agent/grafana-agent-config.yaml
+    owner: grafana_agent
+    group: root
+    mode: 0640
+  notify:
+    - Restart Grafana Agent
+
+- name: Setup Grafana agent Service on /etc/systemd/system
+  ansible.builtin.template:
+    src: grafana_agent.service
+    dest: /etc/systemd/system/grafana_agent.service
+    owner: grafana_agent
+    group: root
+    mode: 0640
+
+- name: Start Grafana agent Service
+  ansible.builtin.service:
+    name: grafana_agent
+    enabled: yes # noqa: yaml[truthy]
+    state: started
