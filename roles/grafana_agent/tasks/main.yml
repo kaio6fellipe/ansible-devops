@@ -1,0 +1,9 @@
+# download the binary
+# curl -O -L "https://github.com/grafana/agent/releases/download/v0.27.0/agent-linux-amd64.zip"
+
+# extract the binary
+# unzip "agent-linux-amd64.zip"
+
+# make sure it is executable
+# chmod a+x "agent-linux-amd64"
+# http://loki-alb.dev.private.ktech-br.com
