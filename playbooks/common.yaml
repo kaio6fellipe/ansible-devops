@@ -9,3 +9,6 @@
       vars:
         user: "{{ item.user }}"
         pub_rsa: "{{ item.pub_rsa }}"
+    - name: Grafana Agent role
+      ansible.builtin.include_role:
+        name: '../roles/grafana_agent'
