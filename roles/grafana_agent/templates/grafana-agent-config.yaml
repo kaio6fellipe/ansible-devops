@@ -20,4 +20,4 @@ logs:
               job: ansible_logs
               __path__: /etc/ansible/log/*log 
     clients:
-      - url: http://loki-alb.dev.private.ktech-br.com/loki/api/v1/push
+      - url: http://loki-alb.{{ deploy_environment }}.private.ktech-br.com/loki/api/v1/push
