@@ -35,7 +35,8 @@ memberlist:
   abort_if_cluster_join_fails: false
   bind_port: 7946
   join_members:
-  - loki-alb.{{ deploy_environment }}.private.ktech-br.com:7946
+  # - loki-alb.{{ deploy_environment }}.private.ktech-br.com:7946
+  - loki-gossip-ring.{{ deploy_environment }}.private.ktech-br.com:7946
 
   max_join_backoff: 1m
   max_join_retries: 10
