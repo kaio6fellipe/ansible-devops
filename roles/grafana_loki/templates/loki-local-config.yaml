@@ -11,6 +11,11 @@ server:
 #         distributed: false
 #         max_size_mb: 100
 
+distributor:
+  ring:
+    kvstore:
+      store: memberlist
+
 ingester:
   wal:
     enabled: true
@@ -19,12 +24,22 @@ ingester:
     address: 127.0.0.1
     ring:
       kvstore:
-        store: inmemory
+        store: memberlist
       replication_factor: 1
     final_sleep: 0s
   chunk_idle_period: 5m
   chunk_retain_period: 30s
   max_transfer_retries: 0
+
+memberlist:
+  abort_if_cluster_join_fails: false
+  bind_port: 7946
+  join_members:
+  - loki-alb.{{ deploy_environment }}.private.ktech-br.com:7946
+
+  max_join_backoff: 1m
+  max_join_retries: 10
+  min_join_backoff: 1s
 
 schema_config:
   configs:
@@ -37,13 +52,13 @@ schema_config:
         period: 24h
 
 compactor:
-  working_directory: /tmp/loki/boltdb-shipper-compactor
+  working_directory: /tmp/loki/compactor
   shared_store: s3
 
 storage_config:
   boltdb_shipper:
-    active_index_directory: /tmp/loki/boltdb-shipper-active
-    cache_location: /tmp/loki/boltdb-shipper-cache
+    active_index_directory: /tmp/loki/index
+    cache_location: /tmp/loki/index_cache
     # cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
     shared_store: s3
   aws:
@@ -52,11 +67,11 @@ storage_config:
     # sse_encryption: true
 
 limits_config:
-  ingestion_rate_mb: 16
-  ingestion_burst_size_mb: 20
+  # ingestion_rate_mb: 16
+  # ingestion_burst_size_mb: 20
   enforce_metric_name: false
-  reject_old_samples: false
-  reject_old_samples_max_age: 504h
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
 
 table_manager:
   retention_deletes_enabled: false
