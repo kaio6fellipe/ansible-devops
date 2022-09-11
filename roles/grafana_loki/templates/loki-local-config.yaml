@@ -11,6 +11,12 @@ server:
 #         distributed: false
 #         max_size_mb: 100
 
+common:
+  storage:
+    s3: 
+      s3: s3://us-east-1/loki-bucket-ktech-br-{{ deploy_environment }}
+      s3forcepathstyle: true
+
 distributor:
   ring:
     kvstore:
@@ -21,7 +27,6 @@ ingester:
     enabled: true
     dir: /tmp/loki/wal
   lifecycler:
-    address: 127.0.0.1
     ring:
       kvstore:
         store: memberlist
@@ -29,13 +34,11 @@ ingester:
     final_sleep: 0s
   chunk_idle_period: 5m
   chunk_retain_period: 30s
-  max_transfer_retries: 0
 
 memberlist:
   abort_if_cluster_join_fails: false
   bind_port: 7946
   join_members:
-  # - loki-alb.{{ deploy_environment }}.private.ktech-br.com:7946
   - loki-gossip-ring.{{ deploy_environment }}.private.ktech-br.com:7946
 
   max_join_backoff: 1m
@@ -60,16 +63,14 @@ storage_config:
   boltdb_shipper:
     active_index_directory: /tmp/loki/index
     cache_location: /tmp/loki/index_cache
-    # cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
+    cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
     shared_store: s3
-  aws:
-    s3: s3://us-east-1/loki-bucket-ktech-br-{{ deploy_environment }}
-    s3forcepathstyle: true
-    # sse_encryption: true
+    resync_interval: 1m
+  # aws:
+  #   s3: s3://us-east-1/loki-bucket-ktech-br-{{ deploy_environment }}
+  #   s3forcepathstyle: true
 
 limits_config:
-  # ingestion_rate_mb: 16
-  # ingestion_burst_size_mb: 20
   enforce_metric_name: false
   reject_old_samples: true
   reject_old_samples_max_age: 168h
