@@ -31,14 +31,14 @@
     group: root
     state: directory
 
-- name: Download and extract mimir 2.6.1
-  ansible.builtin.unarchive:
-    src: https://github.com/grafana/mimir/releases/download/mimir-2.2.0/mimir-linux-amd64
-    dest: /usr/local/bin
+- name: Download mimir 2.6.1
+  ansible.builtin.get_url:
+    url: https://github.com/grafana/mimir/releases/download/mimir-2.2.0/mimir-linux-amd64
+    dest: /usr/local/bin/mimir-linux-amd64
     owner: mimir
     group: root
     mode: 0550
-    remote_src: yes # noqa: yaml[truthy]
+    # remote_src: yes # noqa: yaml[truthy]
 
 - name: Permissions to execute the mimir binary
   ansible.builtin.file:
