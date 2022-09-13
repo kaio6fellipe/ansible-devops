@@ -1,0 +1,72 @@
+---
+# curl -O -L "https://github.com/grafana/loki/releases/download/v2.6.1/loki-linux-amd64.zip"
+# unzip "loki-linux-amd64.zip"
+# chmod a+x "loki-linux-amd64"
+# ./loki-linux-amd64 -config.file=loki-local-config.yaml
+# sudo useradd --system loki
+# chown -R loki:loki /tmp/loki
+# sudo vim /etc/systemd/system/loki.service
+
+- name: Add the user mimir to run the service
+  ansible.builtin.user:
+    name: mimir
+    shell: /bin/bash
+    group: root
+    system: yes # noqa: yaml[truthy]
+    state: present
+
+- name: Make mimir tmp dir
+  ansible.builtin.file:
+    path: "/tmp/mimir"
+    mode: 0755
+    owner: mimir
+    group: root
+    state: directory
+
+- name: Make mimir etc dir
+  ansible.builtin.file:
+    path: "/etc/mimir"
+    mode: 0755
+    owner: mimir
+    group: root
+    state: directory
+
+- name: Download and extract mimir 2.6.1
+  ansible.builtin.unarchive:
+    src: https://github.com/grafana/mimir/releases/download/mimir-2.2.0/mimir-linux-amd64
+    dest: /usr/local/bin
+    owner: mimir
+    group: root
+    mode: 0550
+    remote_src: yes # noqa: yaml[truthy]
+
+- name: Permissions to execute the mimir binary
+  ansible.builtin.file:
+    dest: /usr/local/bin/mimir-linux-amd64
+    mode: a+x
+
+- name: Setup Mimir template config file on /etc/mimir
+  ansible.builtin.template:
+    src: mimir-local-config.yaml
+    dest: /etc/mimir/mimir-local-config.yaml
+    owner: mimir
+    group: root
+    mode: 0640
+  notify:
+    - Restart Mimir
+
+- name: Setup Mimir Service on /etc/systemd/system
+  ansible.builtin.template:
+    src: mimir.service
+    dest: /etc/systemd/system/mimir.service
+    owner: mimir
+    group: root
+    mode: 0640
+
+- name: Start Mimir Service
+  ansible.builtin.service:
+    name: mimir
+    enabled: yes # noqa: yaml[truthy]
+    state: started
+
+# Ajustar o loki config para utilizar o S3 configurado

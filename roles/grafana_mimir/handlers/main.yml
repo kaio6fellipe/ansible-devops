@@ -1,0 +1,5 @@
+---
+- name: Restart Mimir
+  ansible.builtin.service:
+    name: mimir
+    state: restarted

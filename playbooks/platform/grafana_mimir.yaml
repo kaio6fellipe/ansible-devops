@@ -1,0 +1,5 @@
+- hosts:
+    - grafana_mimir
+  become: true
+  roles:
+    - role: '../../roles/grafana_mimir'
