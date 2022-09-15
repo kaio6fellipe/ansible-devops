@@ -2,4 +2,4 @@ multitenancy_enabled: true
 
 server:
   http_listen_port: 9009
-  log_level: error
+  log_level: info
