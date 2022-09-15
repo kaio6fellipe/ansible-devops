@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=mimir
-ExecStart=/usr/local/bin/mimir-linux-amd64
+ExecStart=/usr/local/bin/mimir-linux-amd64 --config.file=/etc/mimir/mimir-local-config.yaml
 
 [Install]
 WantedBy=multi-user.target
