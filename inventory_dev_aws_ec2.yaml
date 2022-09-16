@@ -17,7 +17,7 @@ keyed_groups:
     parent_group: "{{ tags.Env }}"
 
 hostnames:
-  - tag:Name
   - dns-name
   - private-ip-address
   - ip-address
+  - tag:Name
