@@ -21,3 +21,14 @@ logs:
               __path__: /etc/ansible/log/*log 
     clients:
       - url: http://loki-alb.{{ deploy_environment }}.private.ktech-br.com/loki/api/v1/push
+
+metrics:
+  wal_directory: /tmp/grafana_agent/wal
+  configs:
+    - name: agent
+      scrape_configs:
+        - job_name: agent
+          static_configs:
+            - targets: ["127.0.0.1:12345"]
+      remote_write:
+        - url: http://mimir-alb.{{ deploy_environment }}.private.ktech-br.com/api/v1/push
