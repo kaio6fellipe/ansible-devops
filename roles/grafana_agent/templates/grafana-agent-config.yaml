@@ -19,6 +19,16 @@ logs:
             labels:
               job: ansible_logs
               __path__: /etc/ansible/log/*log 
+      - job_name: journal
+        journal:
+          json: false
+          max_age: 12h
+          path: /var/log/journal
+          labels:
+            job: systemd-journal
+        relabel_configs:
+          - source_labels: ['__journal__systemd_unit']
+            target_label: 'unit'
     clients:
       - url: http://loki-alb.{{ deploy_environment }}.private.ktech-br.com/loki/api/v1/push
 
@@ -32,3 +42,14 @@ metrics:
             - targets: ["127.0.0.1:12345"]
       remote_write:
         - url: http://mimir-alb.{{ deploy_environment }}.private.ktech-br.com/api/v1/push
+
+integrations:
+  agent:
+    enabled: true
+    relabel_configs:
+      - action: replace
+        source_labels:
+          - agent_hostname
+        target_label: instance
+  prometheus_remote_write:
+    - url: http://mimir-alb.{{ deploy_environment }}.private.ktech-br.com/api/v1/push
