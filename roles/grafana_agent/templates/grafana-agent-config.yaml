@@ -34,6 +34,10 @@ logs:
 
 metrics:
   wal_directory: /tmp/grafana_agent/wal
+  global:
+    scrape_interval: 15s
+    remote_write:
+    - url: http://mimir-alb.{{ deploy_environment }}.private.ktech-br.com/api/v1/push
   configs:
     - name: agent
       scrape_configs:
@@ -51,5 +55,10 @@ integrations:
         source_labels:
           - agent_hostname
         target_label: instance
+  node_exporter:
+    enabled: true
+    rootfs_path: /host/root
+    sysfs_path: /host/sys
+    procfs_path: /host/proc
   prometheus_remote_write:
     - url: http://mimir-alb.{{ deploy_environment }}.private.ktech-br.com/api/v1/push
