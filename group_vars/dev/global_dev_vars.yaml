@@ -4,12 +4,7 @@ ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
 deploy_environment: "dev"
 
 admin_users:
-  - user: kaio.fellipe
-    pub_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCf/eSmLtj7czYO2U4YmdNVzH\
-    uG7zWoqQB0SXCQF8tlnCHvVhYiTayzVQA0cnnYdnYEd5rPfZqhqovyxuv4d0M3jC5Qvqm4\
-    V99WsvQPKPu6U9YEI2NGU8xOtEPFAldHlIVYWHMAIbKqmGqL3q1dZ0J+Lql1K7/+tdr8Ds\
-    0qhRji8DfIzs+qznzsb74lXzGGFljxDw2Q6BOTQSoKWX3cta3pIINAjgimAw4dVL0Ks+ad\
-    zncvtukBqAdCt86917MdW1KVTAg21QI9tE8VYakSKmyETQ3IB9maC+W7+Ci8PWR6vW7HY9\
-    DrtnZwNpzb4iitx2Lo8wj8pSc45uqGihUoVYf kaio.fellipe@200012-sp-nb\n"
+  - user: kaio
+    pub_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC83np69hiHR1d75nWr5q/oXQVtFZSjFiqTy0J7rUtULWXW4znyD382zrhXJackJpe1026kZksBI9MMvbZSEcLN1qdgwJUTGK7IyivnbKVMdp4NLO2CrPYG+MiX4YnyON1vNSxFoP7jfhNwAq6ODyosqrLaN23JStmRShapY6rO89D6pRrt0lJX9p6CJJiS4zAwGWfIblrpL+7x86sVIKVAMHsVnB+JnbiJNWrfken7c+V52pAthwiHPgJ62usTG5nSw0v8DJDTQF2YzitYYv2FNOxuAFsFwbdwXsydZB2IZPOJm600VXXLxQUGQfGcAD2rnA0MT7D8bxFLBwVY/m5sGiWWdsi0VXn0WzNLqEpKBMh/3WA0K8NNH9S5NTqD3yifN53NP+H1q6IsIXTpGn/yO/I4rMuV6cg+shPvOsmkA/U8SKlbU610Zci0znfBcFJVhEZjS1tshexZGrL+7saZRS6nG7EwG8cKzwbZeNgnaGBDO+Z/sBAq5qBVKb3sWnU= kaio@kaio-Lenovo-ideapad-310-15ISK\n"
   - user: teste
     pub_rsa: "ssh-rsa AHEUAHEUAHUEHAUEHAUE teste@teste"
