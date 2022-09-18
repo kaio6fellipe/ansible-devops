@@ -1,4 +1,4 @@
-# A project to practice Ansible
+# **A project to practice Ansible**
 
 ![Build and package](https://github.com/kaio6fellipe/ansible-devops/actions/workflows/build_package_dev.yml/badge.svg)
 
