@@ -12,7 +12,7 @@ logs:
           - targets: [localhost]
             labels:
               job: varlogs
-              __path__: /var/log/*log
+              __path__: /var/log
       - job_name: ansible_logs
         static_configs:
           - targets: [localhost]
