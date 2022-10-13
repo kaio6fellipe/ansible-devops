@@ -1,7 +1,7 @@
 ---
 exclude_paths:
-  - .cache/ # implicit unless exclude_paths is defined in config
-  - .github/
+  - ../.cache/ # implicit unless exclude_paths is defined in config
+  - ../.github/
 
 loop_var_prefix: "{role}_"
 
@@ -11,6 +11,9 @@ skip_list:
   - fqcn-builtins
   - yaml[new-line-at-end-of-file]
   - yaml[line-length]
+  - fqcn[action-core]  # Use FQCN for builtin actions.
+  # - yaml[trailing-spaces]  # Violations reported by yamllint.
+  # - yaml[truthy]  # Violations reported by yamllint.
 
 enable_list:
   - empty-string-compare # opt-in

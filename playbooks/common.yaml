@@ -1,5 +1,5 @@
-- hosts:
-    - all
+- name: Common playbook
+  hosts: all
   become: true
   tasks:
     - name: Common role
