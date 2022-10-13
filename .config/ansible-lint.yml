@@ -11,6 +11,7 @@ skip_list:
   - fqcn-builtins
   - yaml[new-line-at-end-of-file]
   - yaml[line-length]
+  - fqcn[action-core]  # Use FQCN for builtin actions.
 
 enable_list:
   - empty-string-compare # opt-in
