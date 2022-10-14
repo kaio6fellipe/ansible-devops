@@ -15,3 +15,5 @@ echo "PATH=/sbin:/bin:/usr/sbin:/usr/bin" >> /etc/crontab
 echo "MAILTO=root" >> /etc/crontab
 ENV_DEPLOY=$(sudo -Hiu root env | grep ENV | cut -c5-7)
 echo "*/5 * * * * ec2-user find /etc/ansible/playbooks/ -type f -name \"*.yaml\" -execdir ansible-playbook -i /etc/ansible/inventory_${ENV_DEPLOY}_aws_ec2.yaml {} --vault-password-file /home/ec2-user/.vault_password_file-${ENV_DEPLOY} \;" >> /etc/crontab
+
+ansible-galaxy install -r requirements.yml -p /home/ec2-user/.ansible/collections
