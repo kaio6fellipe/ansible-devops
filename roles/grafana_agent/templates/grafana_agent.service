@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=grafana_agent
-ExecStart=/usr/local/bin/agent-linux-amd64 -config.file /etc/grafana_agent/grafana-agent-config.yaml
+ExecStart=sudo /usr/local/bin/agent-linux-amd64 -config.file /etc/grafana_agent/grafana-agent-config.yaml
 
 [Install]
 WantedBy=multi-user.target
