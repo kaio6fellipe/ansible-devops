@@ -3,3 +3,7 @@
   ansible.builtin.service:
     name: grafana_agent
     state: restarted
+
+- name: Daemon Reload
+  ansible.builtin.systemd:
+    daemon_reload: yes
