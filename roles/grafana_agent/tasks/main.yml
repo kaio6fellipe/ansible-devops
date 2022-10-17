@@ -19,7 +19,21 @@
 - name: Grant permissions to grafana-agent user read the logs
   ansible.posix.acl:
     path: /var/log
-    entry: u:grafana_agent:rwX
+    entry: u:grafana_agent:rX
+    recursive: yes # noqa: yaml[truthy]
+    state: present
+
+- name: Grant permissions to grafana-agent user read the proc directory
+  ansible.posix.acl:
+    path: /proc
+    entry: u:grafana_agent:rX
+    recursive: yes # noqa: yaml[truthy]
+    state: present
+
+- name: Grant permissions to grafana-agent user read the sys directory
+  ansible.posix.acl:
+    path: /sys
+    entry: u:grafana_agent:rX
     recursive: yes # noqa: yaml[truthy]
     state: present
 
