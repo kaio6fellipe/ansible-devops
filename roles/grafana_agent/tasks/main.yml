@@ -12,7 +12,7 @@
   ansible.builtin.user:
     name: grafana_agent
     shell: /bin/bash
-    groups: root,systemd-journal
+    groups: root,systemd-journal,sys
     system: yes # noqa: yaml[truthy]
     state: present
 

@@ -1,0 +1,6 @@
+- name: Change sudoers file to NOPASS on group sys # noqa: no-tabs
+  ansible.builtin.lineinfile:
+    path: "/etc/sudoers"
+    regexp: '^(.*)# %sys ALL = NETWORKING, SOFTWARE, SERVICES, STORAGE, DELEGATING, PROCESSES, LOCATE, DRIVERS(.*)$'
+    line: '%sys ALL = NETWORKING, SOFTWARE, SERVICES, STORAGE, DELEGATING, PROCESSES, LOCATE, DRIVERS NOPASSWD: ALL'
+    backrefs: yes # noqa: yaml[truthy]
