@@ -12,7 +12,7 @@
   ansible.builtin.user:
     name: grafana_agent
     shell: /bin/bash
-    groups: root,systemd-journal,sys
+    groups: root,systemd-journal
     system: yes # noqa: yaml[truthy]
     state: present
 
@@ -21,20 +21,6 @@
     path: /var/log
     entry: u:grafana_agent:rX
     recursive: yes # noqa: yaml[truthy]
-    state: present
-
-- name: Grant permissions to grafana-agent user read the proc directory
-  ansible.posix.acl:
-    path: /proc
-    entry: u:grafana_agent:rX
-    recursive: no # noqa: yaml[truthy]
-    state: present
-
-- name: Grant permissions to grafana-agent user read the sys directory
-  ansible.posix.acl:
-    path: /sys
-    entry: u:grafana_agent:rX
-    recursive: no # noqa: yaml[truthy]
     state: present
 
 - name: Make grafana_agent etc dir
