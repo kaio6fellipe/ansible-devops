@@ -2,6 +2,10 @@
 # It is for demonstration purposes only.
 multitenancy_enabled: false
 
+ruler_client:
+  rule_path: /tmp/mimir/data-ruler/
+
+
 blocks_storage:
   backend: filesystem
   bucket_store:
