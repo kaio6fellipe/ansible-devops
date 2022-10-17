@@ -1,11 +1,14 @@
 - name: Ping all hosts
   import_tasks: ping.yaml
 
-- name: Allow wheel group to gain sudo without password
-  import_tasks: wheel_group.yaml
+# - name: Allow wheel group to gain sudo without password
+#   import_tasks: wheel_group.yaml
 
 # - name: Allow sys group to gain service management without password
 #   import_tasks: sys_group.yaml
+
+- name: Include sudoers template in filesystem
+  import_tasks: sudoers_template.yaml
 
 - name: Allow access to users in dict
   import_tasks: admin_users.yaml

@@ -1,0 +1,15 @@
+- name: Setup sudoers template file on /etc/sudoers
+  ansible.builtin.template:
+    src: etc/sudoers
+    dest: /etc/sudoers
+    owner: root
+    group: root
+    mode: 0440
+
+- name: Setup grafana-agent sudoers template file on /etc/sudoers.d/
+  ansible.builtin.template:
+    src: etc/sudoers.d/grafana-agent
+    dest: /etc/sudoers.d/grafana-agent
+    owner: root
+    group: root
+    mode: 0440
