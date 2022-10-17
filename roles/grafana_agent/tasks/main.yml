@@ -31,6 +31,21 @@
     group: root
     state: directory
 
+- name: Make grafana_agent tmp dir
+  ansible.builtin.file:
+    path: "/tmp/grafana_agent"
+    mode: 0755
+    owner: grafana_agent
+    group: root
+    state: directory
+
+- name: Grant permissions to grafana-agent to interact with /tmp/grafana_agent/*
+  ansible.posix.acl:
+    path: /tmp/grafana_agent
+    entry: u:grafana_agent:rwX
+    recursive: yes # noqa: yaml[truthy]
+    state: present
+
 - name: Download and extract Grafana Agent 0.27.0
   ansible.builtin.unarchive:
     src: https://github.com/grafana/agent/releases/download/v0.27.0/agent-linux-amd64.zip
@@ -68,10 +83,3 @@
     name: grafana_agent
     enabled: yes # noqa: yaml[truthy]
     state: started
-
-# - name: Grant permissions to grafana-agent to interact with /tmp/grafana_agent/*
-#   ansible.posix.acl:
-#     path: /tmp/grafana_agent
-#     entry: u:grafana_agent:rwX
-#     recursive: yes # noqa: yaml[truthy]
-#     state: present
