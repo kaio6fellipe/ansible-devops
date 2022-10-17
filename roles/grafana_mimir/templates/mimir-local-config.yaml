@@ -42,3 +42,6 @@ server:
 store_gateway:
   sharding_ring:
     replication_factor: 1
+
+activity_tracker:
+  filepath: /tmp/mimir/metrics-activity.log
