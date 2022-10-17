@@ -36,8 +36,7 @@ ruler_storage:
     dir: /tmp/mimir/rules
 
 ruler:
-  ruler_client:
-    rule_path: /tmp/mimir/data-ruler/
+  rule_path: /tmp/mimir/data-ruler/  
 
 server:
   http_listen_port: 9009
