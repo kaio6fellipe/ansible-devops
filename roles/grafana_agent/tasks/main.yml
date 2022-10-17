@@ -69,9 +69,9 @@
     enabled: yes # noqa: yaml[truthy]
     state: started
 
-- name: Grant permissions to grafana-agent to interact with /tmp/grafana_agent/*
-  ansible.posix.acl:
-    path: /tmp/grafana_agent
-    entry: u:grafana_agent:rwX
-    recursive: yes # noqa: yaml[truthy]
-    state: present
+# - name: Grant permissions to grafana-agent to interact with /tmp/grafana_agent/*
+#   ansible.posix.acl:
+#     path: /tmp/grafana_agent
+#     entry: u:grafana_agent:rwX
+#     recursive: yes # noqa: yaml[truthy]
+#     state: present
