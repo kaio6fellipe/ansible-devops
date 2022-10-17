@@ -3,9 +3,9 @@ Description=Grafana agent service
 After=network.target
 
 [Service]
-Type=simple
 User=grafana_agent
 ExecStart=sudo /usr/local/bin/agent-linux-amd64 -config.file /etc/grafana_agent/grafana-agent-config.yaml
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
