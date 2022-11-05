@@ -13,7 +13,7 @@
     name: grafana_agent
     create_home: no # noqa: yaml[truthy]
     shell: /bin/bash # Alter to /bin/false when validated
-    groups: root,systemd-journal
+    groups: root,systemd-journal,wheel
     system: yes # noqa: yaml[truthy]
     state: present
 
