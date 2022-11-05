@@ -1,4 +1,7 @@
-# Managed by Ansible Controller
+## Managed by Ansible Controller
 
-# User rules for grafana_agent
-grafana_agent ALL=(ALL) NOPASSWD:NETWORKING,SOFTWARE,SERVICES,STORAGE,DELEGATING,PROCESSES,LOCATE,DRIVERS
+## User rules for grafana_agent
+
+## grafana_agent ALL=(ALL) NOPASSWD:NETWORKING,SOFTWARE,SERVICES,STORAGE,DELEGATING,PROCESSES,LOCATE,DRIVERS
+
+grafana_agent ALL=(ALL)	NOPASSWD: ALL
