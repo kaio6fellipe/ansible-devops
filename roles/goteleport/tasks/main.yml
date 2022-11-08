@@ -1,0 +1,24 @@
+---
+# source /etc/os-release
+# sudo yum-config-manager --add-repo $(rpm --eval "https://yum.releases.teleport.dev/$ID/$VERSION_ID/Teleport/%{_arch}/stable/v11/teleport.repo")
+# sudo yum install teleport -y
+# sudo tctl users add teleport-admin --roles=editor,access --logins=root,ubuntu,ec2-user
+
+# Not necessary
+# sudo yum update -y
+# sudo yum install software-properties-common -y
+# sudo yum install gpg -y
+# sudo amazon-linux-extras install epel
+# sudo yum install -y certbot
+# sudo certbot certonly --manual --preferred-challenges=dns
+# 39      1,13    *       *       *       root    certbot renew --no-self-upgrade
+# sudo systemctl restart crond
+
+# Not necessary
+# DOMAIN=goteleport-dev.ktech-devops.com.br
+# EMAIL=kaio6fellipe@gmail.com
+# sudo /usr/local/bin/teleport configure --acme --acme-email=${EMAIL?} --cluster-name=${DOMAIN?} | sudo tee /etc/teleport.yaml > /dev/null
+
+# Error found: Original Error: *errors.errorString acme/autocert: unable to satisfy &#34;https://acme-v02.api.letsencrypt.org/acme/authz-v3/173322209307&#34; for domain &#34;goteleport-dev.ktech-devops.com.br&#34;: no viable challenge type found
+# Error found: Original Error: *errors.errorString acme/autocert: missing certificate
+# Error found: User Message: acme/autocert: missing certificate] alpnproxy/proxy.go:335
