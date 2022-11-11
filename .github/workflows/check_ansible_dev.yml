@@ -1,6 +1,8 @@
 name: Check Ansible directory (Development)
 
 on: 
+  push:
+    branches: [development]
   pull_request:
     branches: [development]
 
