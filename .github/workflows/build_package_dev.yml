@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   ansible-check:
+    name: Pre-Build
     uses: kaio6fellipe/ansible-devops/.github/workflows/check_ansible_dev.yml@development
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
