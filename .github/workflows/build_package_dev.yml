@@ -17,7 +17,6 @@ jobs:
   ansible-check:
     uses: kaio6fellipe/ansible-devops/.github/workflows/check_ansible_dev.yml@development
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   build:
     name: Build and Package
