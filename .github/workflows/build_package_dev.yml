@@ -2,20 +2,23 @@ name: Build and Package (Development)
 
 on:
   push:
-      branches: [development]
+    branches: [development]
   workflow_dispatch:
 
 env:
   AWS_REGION: "us-east-1"
   S3BUCKET: "codepipeline-ansible-ktech-br-dev"
-  
+
 permissions:
   id-token: write
   contents: read
 
 jobs:
+  ansible-check:
+    uses: kaio6fellipe/ansible-devops/.github/workflows/check_ansible_dev.yml@development
   build:
     name: Build and Package
+    needs: ansible-check
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
