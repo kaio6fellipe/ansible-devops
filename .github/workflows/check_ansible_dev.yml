@@ -10,6 +10,7 @@ on:
 
 jobs:
   sonarcloud:
+    name: Security check
     uses: kaio6fellipe/ansible-devops/.github/workflows/sonar.yml@development
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
