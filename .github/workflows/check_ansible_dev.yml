@@ -4,13 +4,18 @@ on:
   pull_request:
     branches: [development]
   workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+      SONAR_TOKEN:
+        required: true
 
 jobs:
   sonarcloud:
     uses: kaio6fellipe/ansible-devops/.github/workflows/sonar.yml@development
-    # env:
-    #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-    #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   ansible-check:
     name: 'ansible check'
     needs: sonarcloud
