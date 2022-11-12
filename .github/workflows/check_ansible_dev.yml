@@ -14,7 +14,7 @@ jobs:
     secrets:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   ansible-check:
-    name: 'ansible check'
+    name: 'Check Ansible directory'
     needs: sonarcloud
     runs-on: ubuntu-latest
     

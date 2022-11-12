@@ -1,13 +1,13 @@
 # **A project to practice Ansible** 
 
-| Env | Status |
-| --- | ------ |
-| Development | ![Build and package](https://github.com/kaio6fellipe/ansible-devops/actions/workflows/build_package_dev.yml/badge.svg) |
-
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kaio6fellipe_ansible-devops&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kaio6fellipe_ansible-devops)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=kaio6fellipe_ansible-devops&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=kaio6fellipe_ansible-devops)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=kaio6fellipe_ansible-devops&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=kaio6fellipe_ansible-devops)
 ![](https://img.shields.io/github/commit-activity/w/kaio6fellipe/ansible-devops)
+
+| Env | Status |
+| --- | ------ |
+| Development | ![Build and package](https://github.com/kaio6fellipe/ansible-devops/actions/workflows/build_package_dev.yml/badge.svg) |
 
 ## **Role directory structure**
 An Ansible role has a defined directory structure with eight main standard directories. You must include at least one of these directories in each role. You can omit any directories the role does not use. For example:
