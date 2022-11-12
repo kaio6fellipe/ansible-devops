@@ -1,7 +1,7 @@
 name: Sonar Cloud
 on:
   workflow_call:
-    secrets:
+    env:
       GITHUB_TOKEN:
         required: true
       SONAR_TOKEN:
