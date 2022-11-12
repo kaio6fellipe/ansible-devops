@@ -1,8 +1,6 @@
 name: Check Ansible directory (Development)
 
 on:
-  push:
-    branches: [development]
   pull_request:
     branches: [development]
   workflow_call:
@@ -10,6 +8,9 @@ on:
 jobs:
   sonarcloud:
     uses: kaio6fellipe/ansible-devops/.github/workflows/sonar.yml@development
+    # env:
+    #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+    #   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   ansible-check:
     name: 'ansible check'
     needs: sonarcloud

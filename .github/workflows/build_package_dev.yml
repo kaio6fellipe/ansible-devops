@@ -8,6 +8,8 @@ on:
 env:
   AWS_REGION: "us-east-1"
   S3BUCKET: "codepipeline-ansible-ktech-br-dev"
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 permissions:
   id-token: write
