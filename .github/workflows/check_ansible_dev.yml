@@ -43,4 +43,9 @@ jobs:
 
       - name: Run playbook check
         working-directory: .
-        run: ansible-playbook playbooks/*.yaml --check
+        # run: ansible-playbook playbooks/*.yaml --check
+        run: |
+          find playbooks/ -type f -name "*.yaml" \
+          -execdir ansible-playbook \ 
+          --connection=local \
+          --inventory 127.0.0.1 {} --check \;
