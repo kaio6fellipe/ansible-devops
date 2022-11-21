@@ -1,0 +1,10 @@
+---
+# sudo amazon-linux-extras install epel -y
+# sudo yum install ansible -y
+# /etc/ansible/inventory/group_vars/all/vars.yml
+# /etc/ansible/inventory/inventory.localhost
+# /etc/ansible/roles/README.md
+# /etc/ansible/all.yml
+# /etc/ansible/ansible.cfg
+# /etc/crontab
+# /etc/ansible/gitops_agent.sh
