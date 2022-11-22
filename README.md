@@ -1,18 +1,9 @@
-<head>
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-</head>
-
 # **A project to practice Ansible** 
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kaio6fellipe_ansible-devops&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kaio6fellipe_ansible-devops)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=kaio6fellipe_ansible-devops&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=kaio6fellipe_ansible-devops)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=kaio6fellipe_ansible-devops&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=kaio6fellipe_ansible-devops)
 ![](https://img.shields.io/github/commit-activity/w/kaio6fellipe/ansible-devops)
-
-<a class="github-button" href="https://github.com/kaio6fellipe/ansible-devops" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark_high_contrast;" data-size="large" aria-label="Star kaio6fellipe/ansible-devops on GitHub">Star</a>
-<a class="github-button" href="https://github.com/kaio6fellipe/ansible-devops/discussions" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark_high_contrast;" data-size="large" aria-label="Discuss kaio6fellipe/ansible-devops on GitHub">Discuss</a>
-<a class="github-button" href="https://github.com/kaio6fellipe/ansible-devops/issues" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark_high_contrast;" data-size="large" aria-label="Issue kaio6fellipe/ansible-devops on GitHub">Issue</a>
-<a class="github-button" href="https://github.com/kaio6fellipe" data-color-scheme="no-preference: dark_high_contrast; light: dark_high_contrast; dark: dark_high_contrast;" data-size="large" aria-label="Follow @kaio6fellipe on GitHub">Follow @kaio6fellipe</a>
 
 | Env | Status |
 | --- | ------ |
