@@ -7,4 +7,4 @@
 # /etc/ansible/all.yml
 # /etc/ansible/ansible.cfg
 # /etc/crontab
-# /etc/ansible/gitops_agent.sh
+# /etc/ansible/gitops_agent
