@@ -26,11 +26,11 @@ API_CALL=${CURL}' -H "Accept: application/vnd.github+json" '${BASE_URL}
 
 # ${COMMAND} | jq "."
 
-function_get_repo_content () {
+function_get_role_repo_content () {
     echo "I am a function"
 }
 
-function_get_file_content () {
+function_get_var_file_content () {
     for file in "${VAR_FILES_PATH[@]}"; do
         RAW_OUTPUT=$(${API_CALL}${file}${BRANCH})
         download_url=$(echo ${RAW_OUTPUT} | jq ".download_url" | cut -d '"' -f 2)
@@ -39,21 +39,21 @@ function_get_file_content () {
     done
 }
 
-function_get_file_content
+function_get_var_file_content
 
-function_diff_repo_content () {
+function_diff_role_repo_content () {
     echo "I am a function"
 }
 
-function_diff_file_content () {
+function_diff_var_file_content () {
     echo "I am a function"
 }
 
-function_replace_repo_content () {
+function_replace_role_repo_content () {
     echo "I am a function"
 }
 
-function_replace_file_content () {
+function_replace_var_file_content () {
     echo "I am a function"
 }
 
