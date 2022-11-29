@@ -11,7 +11,9 @@ BASE_URL=https://api.github.com/repos/${OWNER}/${REPO}/contents
 ANSIBLE_DIR="$(pwd)"
 GITOPS_TEMP_DIR="$(pwd)/tmp/gitops_agent"
 
-ROLE_REPO_PATH="/roles/grafana_agent"
+declare -a ROLE_REPO_PATH=(
+    "/roles/grafana_agent"
+)
 declare -a VAR_FILES_PATH=(
     "/group_vars/dev/global_dev_vars.yaml"
 )
@@ -24,11 +26,30 @@ CURL=$(command -v curl)
 JQ=$(command -v jq)
 API_CALL=${CURL}' -H "Accept: application/vnd.github+json" '${BASE_URL}
 
-# ${COMMAND} | jq "."
+# ${API_CALL} | jq "."
 
-function_get_role_repo_content () {
+function_scrap_dir () {
     echo "I am a function"
 }
+
+function_get_role_repo_content () {
+    for role in "${ROLE_REPO_PATH[@]}"; do
+        RAW_OUTPUT=$(${API_CALL}${role}${BRANCH})
+        # RAW_OUTPUT=$($RAW_OUTPUT | sed 's/\n//g' | sed 's/\[//' | sed 's/.$//' | sed 's/},/\n/g')
+        while IFS=$'}\n{' read -r line; do
+            echo -e $line
+            echo -e teste
+        done <<< $RAW_OUTPUT | tr -d ' ' | tr -d '\n' | sed 's/\[//' | sed 's/.$//' | sed 's/},/}\n/g'
+        # for item in "${LIST[@]}"; do
+        #     echo $item
+    done
+}
+
+function_get_role_repo_content_recursive () {
+    echo "I am a function"
+}
+
+function_get_role_repo_content
 
 function_get_var_file_content () {
     for file in "${VAR_FILES_PATH[@]}"; do
@@ -39,7 +60,7 @@ function_get_var_file_content () {
     done
 }
 
-function_get_var_file_content
+# function_get_var_file_content
 
 function_diff_role_repo_content () {
     echo "I am a function"
