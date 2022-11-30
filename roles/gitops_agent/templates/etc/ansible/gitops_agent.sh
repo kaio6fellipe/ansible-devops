@@ -30,24 +30,34 @@ API_CALL=${CURL}' -H "Accept: application/vnd.github+json" '${BASE_URL}
 # ${API_CALL} | jq "."
 
 function_scrap_dir () {
-    echo "Create directory and scrap it"
+    SCRAP_URL="$1"
+    DIR_NAME="$2"
+    CURRENT_DIR="$3"
+    echo ${CURRENT_DIR}/${DIR_NAME}
+    mkdir -p ${CURRENT_DIR}/${DIR_NAME}
+    # Include the while loop calling this functions again until there are no other dirs.
 }
 
 function_download_file () {
-    echo "Download file"
+    DOWNLOAD_URL="$1"
+    FILE_NAME="$2"
+    CURRENT_DIR="$3"
+    ${CURL} ${download_url} > ${CURRENT_DIR}/${FILE_NAME}
 }
 
 function_get_role_repo_content () {
     for role in "${ROLE_REPO_PATH[@]}"; do
-        RAW_OUTPUT=$(${API_CALL}${ROLE_REPO_PATH[0]}${BRANCH})
-        while IFS=$'\t' read -r type url download_url; do
+        RAW_OUTPUT=$(${API_CALL}${role}${BRANCH})
+        BASE_DIR=${GITOPS_TEMP_DIR}${role}
+        mkdir -p ${BASE_DIR}
+        while IFS=$'\t' read -r name type url download_url; do
             # echo $type $url $download_url
             if [ $type = "dir" ]; then
-                echo "Its a dir!"
+                function_scrap_dir "$url" "$name" "$BASE_DIR"
             else
-                echo "Its a file!"
+                function_download_file "$download_url" "$name" "$BASE_DIR"
             fi
-        done <<< $(echo -e $RAW_OUTPUT | jq -r '.[] | [.type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
+        done <<< $(echo -e $RAW_OUTPUT | jq -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
     done
 }
 
@@ -62,6 +72,7 @@ function_get_var_file_content () {
         RAW_OUTPUT=$(${API_CALL}${file}${BRANCH})
         download_url=$(echo ${RAW_OUTPUT} | jq ".download_url" | cut -d '"' -f 2)
         file_name=$(echo ${RAW_OUTPUT} | jq ".name" | cut -d '"' -f 2)
+        mkdir -p ${GITOPS_TEMP_DIR}/group_vars/all
         ${CURL} ${download_url} > ${GITOPS_TEMP_DIR}/group_vars/all/${file_name} 
     done
 }
