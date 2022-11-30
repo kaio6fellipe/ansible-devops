@@ -25,17 +25,25 @@ fi
 
 CURL=$(command -v curl)
 JQ=$(command -v jq)
-API_CALL=${CURL}' -H "Accept: application/vnd.github+json" '${BASE_URL}
-
-# ${API_CALL} | jq "."
+API_HEADER=${CURL}' -H "Accept: application/vnd.github+json" '
+API_CALL=${API_HEADER}${BASE_URL}
 
 function_scrap_dir () {
     SCRAP_URL="$1"
     DIR_NAME="$2"
     CURRENT_DIR="$3"
-    echo ${CURRENT_DIR}/${DIR_NAME}
     mkdir -p ${CURRENT_DIR}/${DIR_NAME}
-    # Include the while loop calling this functions again until there are no other dirs.
+    NEW_CURRENT_DIR="${CURRENT_DIR}/${DIR_NAME}"
+    RAW_OUTPUT=$(${API_HEADER}${SCRAP_URL})
+    while IFS=$'\t' read -r name type url download_url; do
+        if [ $type = "dir" ]; then
+            function_scrap_dir "$url" "$name" "$NEW_CURRENT_DIR"
+        elif [ $type = "file" ]; then
+            function_download_file "$download_url" "$name" "$NEW_CURRENT_DIR"
+        else
+            echo "Type not specified: $type"
+        fi
+    done <<< $(echo -e $RAW_OUTPUT | jq -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
 }
 
 function_download_file () {
@@ -51,21 +59,16 @@ function_get_role_repo_content () {
         BASE_DIR=${GITOPS_TEMP_DIR}${role}
         mkdir -p ${BASE_DIR}
         while IFS=$'\t' read -r name type url download_url; do
-            # echo $type $url $download_url
             if [ $type = "dir" ]; then
                 function_scrap_dir "$url" "$name" "$BASE_DIR"
-            else
+            elif [ $type = "file" ]; then
                 function_download_file "$download_url" "$name" "$BASE_DIR"
+            else
+                echo "Type not specified: $type"
             fi
         done <<< $(echo -e $RAW_OUTPUT | jq -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
     done
 }
-
-function_get_role_repo_content_recursive () {
-    echo "I am a function"
-}
-
-function_get_role_repo_content
 
 function_get_var_file_content () {
     for file in "${VAR_FILES_PATH[@]}"; do
@@ -77,25 +80,28 @@ function_get_var_file_content () {
     done
 }
 
-# function_get_var_file_content
+function_diff_replace_content () {
+    EXEC_GROUP_VARS=${ANSIBLE_DIR}/inventory
+    EXEC_ROLES=${ANSIBLE_DIR}
+    REF_GROUP_VARS=${GITOPS_TEMP_DIR}/group_vars
+    REF_ROLES=${GITOPS_TEMP_DIR}/roles
 
-function_diff_role_repo_content () {
-    echo "I am a function"
+    VARS_DIFF=$(diff --brief --recursive $REF_GROUP_VARS $EXEC_GROUP_VARS/group_vars | wc -l)
+    ROLES_DIFF=$(diff --brief --recursive $REF_ROLES $EXEC_ROLES/roles | wc -l)
+    DIFF=$(($VARS_DIFF + $ROLES_DIFF))
+
+    if [ $DIFF != 0 ]; then
+        cp -r $REF_GROUP_VARS $EXEC_GROUP_VARS
+        cp -r $REF_ROLES $EXEC_ROLES
+        # Ansible commands to be executed if a diff was detected
+        # {% for command in ansible_command %}
+        # {{ command }} 
+        # {% endfor                         %}
+    else
+        echo "No diff found"
+    fi 
 }
 
-function_diff_var_file_content () {
-    echo "I am a function"
-}
-
-function_replace_role_repo_content () {
-    echo "I am a function"
-}
-
-function_replace_var_file_content () {
-    echo "I am a function"
-}
-
-# Ansible commands to be executed if a diff was detected
-# {% for command in ansible_command %}
-# {{ command }} 
-# {% endfor                         %}
+function_get_role_repo_content
+function_get_var_file_content
+function_diff_replace_content
