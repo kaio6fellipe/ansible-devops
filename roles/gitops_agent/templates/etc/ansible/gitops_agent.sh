@@ -17,6 +17,7 @@ declare -a ROLE_REPO_PATH=(
 declare -a VAR_FILES_PATH=(
     "/group_vars/dev/global_dev_vars.yaml"
 )
+declare -a LIST=()
 
 if [ $(command -v jq) = "" ]; then
     sudo apt install jq -y
@@ -29,19 +30,24 @@ API_CALL=${CURL}' -H "Accept: application/vnd.github+json" '${BASE_URL}
 # ${API_CALL} | jq "."
 
 function_scrap_dir () {
-    echo "I am a function"
+    echo "Create directory and scrap it"
+}
+
+function_download_file () {
+    echo "Download file"
 }
 
 function_get_role_repo_content () {
     for role in "${ROLE_REPO_PATH[@]}"; do
-        RAW_OUTPUT=$(${API_CALL}${role}${BRANCH})
-        # RAW_OUTPUT=$($RAW_OUTPUT | sed 's/\n//g' | sed 's/\[//' | sed 's/.$//' | sed 's/},/\n/g')
-        while IFS=$'}\n{' read -r line; do
-            echo -e $line
-            echo -e teste
-        done <<< $RAW_OUTPUT | tr -d ' ' | tr -d '\n' | sed 's/\[//' | sed 's/.$//' | sed 's/},/}\n/g'
-        # for item in "${LIST[@]}"; do
-        #     echo $item
+        RAW_OUTPUT=$(${API_CALL}${ROLE_REPO_PATH[0]}${BRANCH})
+        while IFS=$'\t' read -r type url download_url; do
+            # echo $type $url $download_url
+            if [ $type = "dir" ]; then
+                echo "Its a dir!"
+            else
+                echo "Its a file!"
+            fi
+        done <<< $(echo -e $RAW_OUTPUT | jq -r '.[] | [.type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
     done
 }
 
