@@ -12,7 +12,7 @@
     name: mimir
     shell: /bin/bash
     group: root
-    system: yes # noqa: yaml[truthy]
+    system: true
     state: present
 
 - name: Make mimir tmp dir
@@ -38,7 +38,7 @@
     owner: mimir
     group: root
     mode: 0550
-    # remote_src: yes # noqa: yaml[truthy]
+    # remote_src: true
 
 - name: Permissions to execute the mimir binary
   ansible.builtin.file:
@@ -66,7 +66,7 @@
 - name: Start Mimir Service
   ansible.builtin.service:
     name: mimir
-    enabled: yes # noqa: yaml[truthy]
+    enabled: true
     state: started
 
 # Ajustar o loki config para utilizar o S3 configurado

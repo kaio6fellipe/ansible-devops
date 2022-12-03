@@ -29,6 +29,6 @@
 - name: Enable and start Grafana service
   ansible.builtin.systemd:
     name: grafana-server
-    enabled: yes # noqa: yaml[truthy]
+    enabled: true
     state: started
-    daemon_reload: yes # noqa: yaml[truthy]
+    daemon_reload: true
