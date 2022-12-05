@@ -3,18 +3,18 @@
 
 - name: Amazon Linux Extras install epel
   become: true
-  shell: amazon-linux-extrax intall epel -y
+  command: amazon-linux-extrax intall epel -y # noqa: no-changed-when
 
 - name: Install Ansible
   become: true
   yum:
     name:
-      - ansible 
+      - ansible
 
 - name: Ensure /etc/ansible/[inventory, inventory/group_vars, inventory/group_vars/all, roles, tmp, tmp/gitops_agent] exists
   become: true
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ item }}" # noqa: no-loop-var-prefix
     state: directory
     mode: '0644'
     owner: root
@@ -56,3 +56,5 @@
   ansible.builtin.template:
     src: etc/ansible/all.yml
     dest: /etc/ansible/all.yml
+    mode: '0644'
+    owner: root
