@@ -4,9 +4,9 @@
 set -o errexit
 set -o nounset
 
-OWNER="kaio6fellipe"
-REPO="ansible-devops"
-BRANCH="?ref=ansible-gitops-agent"
+OWNER="{{ owner }}"
+REPO="{{ repository }}"
+BRANCH="?ref={{ branch }}"
 BASE_URL=https://api.github.com/repos/${OWNER}/${REPO}/contents
 ANSIBLE_DIR="$(pwd)"
 GITOPS_TEMP_DIR="$(pwd)/tmp/gitops_agent"

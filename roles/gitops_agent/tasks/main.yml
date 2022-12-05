@@ -58,3 +58,11 @@
     dest: /etc/ansible/all.yml
     mode: '0644'
     owner: root
+
+- name: Ensure that crontab exists and its managed by Ansible
+  become: true
+  ansbile.builting.template:
+    src: etc/crontab
+    dest: /etc/crontab
+    mode: '0644'
+    owner: root
