@@ -12,3 +12,5 @@ monitored_roles:
 extra_var_files:
   - name: global_dev_vars.yaml
     path: /group_vars/dev/global_dev_vars.yaml
+
+vault_password: some_encrypted_password_with_ansible_vault
