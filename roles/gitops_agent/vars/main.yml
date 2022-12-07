@@ -1,8 +1,8 @@
 base_info:
-  - name: gitops_agent example
-    owner: kaio6fellipe
-    repository: ansible-devops
-    branch: development
+  name: gitops_agent example
+  owner: kaio6fellipe
+  repository: ansible-devops
+  branch: development
 
 monitored_roles:
   - name: grafana_agent
