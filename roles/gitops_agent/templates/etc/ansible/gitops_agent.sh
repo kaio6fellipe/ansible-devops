@@ -12,12 +12,15 @@ ANSIBLE_DIR="$(pwd)"
 GITOPS_TEMP_DIR="$(pwd)/tmp/gitops_agent"
 
 declare -a ROLE_REPO_PATH=(
-    "/roles/grafana_agent"
+{% for role in monitored_roles %}
+    "{{ role.path }}"
+{% endfor                      %}
 )
 declare -a VAR_FILES_PATH=(
-    "/group_vars/dev/global_dev_vars.yaml"
+{% for var_file in extra_var_files %}    
+    "{{ var_file.path }}"
+{% endfor                          %}
 )
-declare -a LIST=()
 
 if [ $(command -v jq) = "" ]; then
     sudo apt install jq -y
@@ -43,7 +46,7 @@ function_scrap_dir () {
         else
             echo "Type not specified: $type"
         fi
-    done <<< $(echo -e $RAW_OUTPUT | jq -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
+    done <<< $(echo -e $RAW_OUTPUT | ${JQ} -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
 }
 
 function_download_file () {
@@ -66,15 +69,15 @@ function_get_role_repo_content () {
             else
                 echo "Type not specified: $type"
             fi
-        done <<< $(echo -e $RAW_OUTPUT | jq -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
+        done <<< $(echo -e $RAW_OUTPUT | ${JQ} -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @tsv' 2>&1)
     done
 }
 
 function_get_var_file_content () {
     for file in "${VAR_FILES_PATH[@]}"; do
         RAW_OUTPUT=$(${API_CALL}${file}${BRANCH})
-        download_url=$(echo ${RAW_OUTPUT} | jq ".download_url" | cut -d '"' -f 2)
-        file_name=$(echo ${RAW_OUTPUT} | jq ".name" | cut -d '"' -f 2)
+        download_url=$(echo ${RAW_OUTPUT} | ${JQ} ".download_url" | cut -d '"' -f 2)
+        file_name=$(echo ${RAW_OUTPUT} | ${JQ} ".name" | cut -d '"' -f 2)
         mkdir -p ${GITOPS_TEMP_DIR}/group_vars/all
         ${CURL} ${download_url} > ${GITOPS_TEMP_DIR}/group_vars/all/${file_name} 
     done
@@ -94,9 +97,9 @@ function_diff_replace_content () {
         cp -r $REF_GROUP_VARS $EXEC_GROUP_VARS
         cp -r $REF_ROLES $EXEC_ROLES
         # Ansible commands to be executed if a diff was detected
-        # {% for command in ansible_command %}
-        # {{ command }} 
-        # {% endfor                         %}
+        {% for role in monitored_roles %}
+        ansible-playbook -i inventory/inventory.localhost --tags {{ role.tag }}
+        {% endfor                      %}
     else
         echo "No diff found"
     fi 

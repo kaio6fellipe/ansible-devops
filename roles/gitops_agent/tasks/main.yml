@@ -1,5 +1,4 @@
 ---
-# /etc/crontab
 
 - name: Amazon Linux Extras install epel
   become: true
