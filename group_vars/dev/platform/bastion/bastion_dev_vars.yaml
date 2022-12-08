@@ -13,4 +13,4 @@ extra_var_files:
   - name: global_dev_vars.yaml
     path: /group_vars/dev/global_dev_vars.yaml
 
-vault_password: {{ gitops_vault_password }}
+vault_password: "{{ gitops_vault_password }}"
