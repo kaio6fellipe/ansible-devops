@@ -2,7 +2,7 @@
 
 - name: Amazon Linux Extras install epel
   become: true
-  command: amazon-linux-extrax intall epel -y # noqa: no-changed-when
+  command: sudo amazon-linux-extras install epel -y # noqa: no-changed-when
 
 - name: Install Ansible
   become: true
@@ -33,6 +33,11 @@
     dest: /etc/ansible/gitops_agent.sh
     mode: '0644'
     owner: root
+  
+- name: Changing permissions of /etc/ansible/gitops_agent.sh, adding "+x"
+  ansible.builtin.file:
+    dest: /etc/ansible/gitops_agent.sh
+    mode: a+x
 
 - name: Ensure that ansible.cfg exists
   become: true
@@ -60,7 +65,7 @@
 
 - name: Ensure that crontab exists and its managed by Ansible
   become: true
-  ansbile.builting.template:
+  ansible.builtin.template:
     src: etc/crontab
     dest: /etc/crontab
     mode: '0644'
