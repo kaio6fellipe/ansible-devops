@@ -9,7 +9,31 @@
 | --- | ------ |
 | Development | ![Build and package](https://github.com/kaio6fellipe/ansible-devops/actions/workflows/build_package_dev.yml/badge.svg) |
 
-## **Role directory structure**
+This repository manage the configuration present in every machine of my platform (In creation) with a different approach of Ansible usage, using it in a "GitOps" flow with a pipeline linked to an "Ansible Controller" in AWS. Infrastructure bootstrap and management is being realized in my [terraform-devops](https://github.com/kaio6fellipe/terraform-devops) repository.
+
+So basically this would be the flow that the code in this repository goes through:
+- GitHub 
+- Build and Package (GitActions) 
+- Upload to S3 
+- CodePipeline ([aws folder](https://github.com/kaio6fellipe/ansible-devops/tree/development/aws/scripts))
+  - Ansible Controller
+    - After that, all playbooks will be executed, ensuring that all configs present in this repo will be provisioned in all machines present in the dynamic inventory
+
+### Things that are already included:
+- [x] Common role to deal with user management and everything that all machines must have in common
+- [x] Grafana Dashboards config role
+- [x] Grafana Agent config role
+- [x] Grafana Loki config role
+- [x] Grafana Mimir config role (Testing)
+- [x] Dynamic inventory based on AWS tags
+- [x] SonarQube coverage
+### Things that will be included (or not):
+- [ ] GoTeleport config role (maybe not)
+- [ ] Grafana Tempo config role
+- [ ] Helm config role for EKS
+- [ ] Amazon Linux 2 optimization role
+
+## **[Role directory structure](https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#role-directory-structure)**
 An Ansible role has a defined directory structure with eight main standard directories. You must include at least one of these directories in each role. You can omit any directories the role does not use. For example:
 
 ```shell

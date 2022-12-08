@@ -1,0 +1,67 @@
+---
+
+- name: Amazon Linux Extras install epel
+  become: true
+  command: amazon-linux-extrax intall epel -y # noqa: no-changed-when
+
+- name: Install Ansible
+  become: true
+  yum:
+    name:
+      - ansible
+
+- name: Ensure /etc/ansible/[inventory, inventory/group_vars, inventory/group_vars/all, roles, tmp, tmp/gitops_agent] exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}" # noqa: no-loop-var-prefix
+    state: directory
+    mode: '0644'
+    owner: root
+  with_items:
+    - "/etc/ansible/"
+    - "/etc/ansible/inventory/"
+    - "/etc/ansible/inventory/group_vars/"
+    - "/etc/ansible/inventory/group_vars/all/"
+    - "/etc/ansible/roles/"
+    - "/etc/ansible/tmp/"
+    - "/etc/ansible/tmp/gitops_agent/"
+
+- name: Ensure that gitops_agent.sh exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/gitops_agent.sh
+    dest: /etc/ansible/gitops_agent.sh
+    mode: '0644'
+    owner: root
+
+- name: Ensure that ansible.cfg exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/ansible.cfg
+    dest: /etc/ansible/ansible.cfg
+    mode: '0644'
+    owner: root
+
+- name: Ensure that inventory.localhost exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/inventory/inventory.localhost
+    dest: /etc/ansible/inventory/inventory.localhost
+    mode: '0644'
+    owner: root
+
+- name: Ensure that all.yml exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/all.yml
+    dest: /etc/ansible/all.yml
+    mode: '0644'
+    owner: root
+
+- name: Ensure that crontab exists and its managed by Ansible
+  become: true
+  ansbile.builting.template:
+    src: etc/crontab
+    dest: /etc/crontab
+    mode: '0644'
+    owner: root

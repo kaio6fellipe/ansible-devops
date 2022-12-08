@@ -11,17 +11,17 @@
 - name: Add the user grafana-agent to run the service
   ansible.builtin.user:
     name: grafana_agent
-    create_home: no # noqa: yaml[truthy]
+    create_home: false
     shell: /bin/bash # Alter to /bin/false when validated
     groups: root,systemd-journal,wheel
-    system: yes # noqa: yaml[truthy]
+    system: true
     state: present
 
 - name: Grant permissions to grafana-agent user read the logs
   ansible.posix.acl:
     path: /var/log
     entry: u:grafana_agent:rX
-    recursive: yes # noqa: yaml[truthy]
+    recursive: true
     state: present
 
 - name: Make grafana_agent etc dir
@@ -44,7 +44,7 @@
   ansible.posix.acl:
     path: /tmp/grafana_agent
     entry: u:grafana_agent:rwX
-    recursive: yes # noqa: yaml[truthy]
+    recursive: true
     state: present
 
 - name: Download and extract Grafana Agent 0.27.0
@@ -54,7 +54,7 @@
     owner: grafana_agent
     group: root
     mode: 0550
-    remote_src: yes # noqa: yaml[truthy]
+    remote_src: true
 
 - name: Permissions to execute the grafana-agent binary
   ansible.builtin.file:
@@ -85,5 +85,5 @@
 - name: Start Grafana agent Service
   ansible.builtin.service:
     name: grafana_agent
-    enabled: yes # noqa: yaml[truthy]
+    enabled: true
     state: started
