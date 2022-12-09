@@ -8,8 +8,8 @@ OWNER="{{ base_info.owner }}"
 REPO="{{ base_info.repository }}"
 BRANCH="?ref={{ base_info.branch }}"
 BASE_URL=https://api.github.com/repos/${OWNER}/${REPO}/contents
-ANSIBLE_DIR="$(pwd)"
-GITOPS_TEMP_DIR="$(pwd)/tmp/gitops_agent"
+ANSIBLE_DIR="/etc/ansible"
+GITOPS_TEMP_DIR="${ANSIBLE_DIR}/tmp/gitops_agent"
 
 declare -a ROLE_REPO_PATH=(
 {% for role in monitored_roles %}
