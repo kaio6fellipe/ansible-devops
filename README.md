@@ -7,7 +7,7 @@
 
 | Env | Status |
 | --- | ------ |
-| Development | ![Build and package](https://github.com/kaio6fellipe/ansible-devops/actions/workflows/build_package_dev.yml/badge.svg) |
+| Development | ![Build and package](https://github.com/kaio6fellipe/ansible-devops/actions/workflows/build_package.yml/badge.svg) |
 
 This repository manage the configuration present in every machine of my platform (In creation) with a different approach of Ansible usage, using it in a "GitOps" flow with a pipeline linked to an "Ansible Controller" in AWS. Infrastructure bootstrap and management is being realized in my [terraform-devops](https://github.com/kaio6fellipe/terraform-devops) repository.
 
