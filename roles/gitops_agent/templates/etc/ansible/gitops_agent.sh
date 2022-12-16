@@ -98,7 +98,7 @@ function_diff_replace_content () {
         cp -r $REF_ROLES $EXEC_ROLES
         # Ansible commands to be executed if a diff was detected
         {% for role in monitored_roles %}
-        ansible-playbook -i inventory/inventory.localhost all.yml --tags {{ role.tag }}
+        python3 $(which ansible-playbook) -i inventory/inventory.localhost all.yml --tags {{ role.tag }}
         {% endfor                      %}
 
     else

@@ -19,4 +19,4 @@ ENV_DEPLOY=$(sudo -Hiu root env | grep ENV | cut -c5-7)
 ansible-galaxy collection install -r /etc/ansible/requirements.yml -p /home/ec2-user/.ansible/collections -v
 chown -R ec2-user:root /home/ec2-user/.ansible
 
-sudo -u ec2-user find /etc/ansible/playbooks/ -type f -name "*.yaml" -execdir ansible-playbook -i /etc/ansible/inventory_${ENV_DEPLOY}_aws_ec2.yaml {} --vault-password-file /home/ec2-user/.vault_password_file-${ENV_DEPLOY} \;
+sudo -u ec2-user find /etc/ansible/playbooks/ -type f -name "*.yaml" -execdir python3 $(which ansible-playbook) -i /etc/ansible/inventory_${ENV_DEPLOY}_aws_ec2.yaml {} --vault-password-file /home/ec2-user/.vault_password_file-${ENV_DEPLOY} \;
