@@ -14,3 +14,5 @@ extra_var_files:
     path: /group_vars/dev/global_dev_vars.yaml
 
 vault_password: "{{ gitops_vault_password }}"
+vault_user_auth: "{{ github_user_auth }}"
+vault_personal_access_token: "{{ github_personal_access_token }}"

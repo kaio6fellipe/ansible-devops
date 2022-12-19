@@ -7,6 +7,8 @@ set -o nounset
 OWNER="{{ base_info.owner }}"
 REPO="{{ base_info.repository }}"
 BRANCH="?ref={{ base_info.branch }}"
+USER_AUTH="{{ vault_user_auth }}"
+PAT_TOKEN="{{ vault_personal_access_token }}"
 BASE_URL=https://api.github.com/repos/${OWNER}/${REPO}/contents
 ANSIBLE_DIR="/etc/ansible"
 GITOPS_TEMP_DIR="${ANSIBLE_DIR}/tmp/gitops_agent"
@@ -28,7 +30,7 @@ fi
 
 CURL=$(command -v curl)
 JQ=$(command -v jq)
-API_HEADER=${CURL}' -H "Accept: application/vnd.github+json" '
+API_HEADER=${CURL}' -u ${USER_AUTH}:${PAT_TOKEN} -H "Accept: application/vnd.github+json" '
 API_CALL=${API_HEADER}${BASE_URL}
 
 function_scrap_dir () {
