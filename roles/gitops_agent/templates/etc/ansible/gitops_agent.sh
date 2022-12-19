@@ -38,7 +38,8 @@ function_scrap_dir () {
     mkdir -p ${CURRENT_DIR}/${DIR_NAME}
     NEW_CURRENT_DIR="${CURRENT_DIR}/${DIR_NAME}"
     RAW_OUTPUT=$(${API_HEADER}${SCRAP_URL})
-    while IFS=, read -r raw_name raw_type raw_url raw_download_url; do
+    echo -e $RAW_OUTPUT | ${JQ} -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @csv' 2>&1 | while IFS=, read -r raw_name raw_type raw_url raw_download_url 
+    do
         name=$(echo $raw_name | cut -d '"' -f 2)
         type=$(echo $raw_type | cut -d '"' -f 2)
         url=$(echo $raw_url | cut -d '"' -f 2)
@@ -51,7 +52,7 @@ function_scrap_dir () {
         else
             echo "Type not specified: $type"
         fi
-    done <<< $(echo -e $RAW_OUTPUT | ${JQ} -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @csv' 2>&1)
+    done
 }
 
 function_download_file () {
@@ -66,7 +67,8 @@ function_get_role_repo_content () {
         RAW_OUTPUT=$(${API_CALL}${role}${BRANCH})
         BASE_DIR=${GITOPS_TEMP_DIR}${role}
         mkdir -p ${BASE_DIR}
-        while IFS=, read -r raw_name raw_type raw_url raw_download_url; do
+        echo -e $RAW_OUTPUT | ${JQ} -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @csv' 2>&1 | while IFS=, read -r raw_name raw_type raw_url raw_download_url
+        do
             name=$(echo $raw_name | cut -d '"' -f 2)
             type=$(echo $raw_type | cut -d '"' -f 2)
             url=$(echo $raw_url | cut -d '"' -f 2)
@@ -79,7 +81,7 @@ function_get_role_repo_content () {
             else
                 echo "Type not specified: $type"
             fi
-        done <<< $(echo -e $RAW_OUTPUT | ${JQ} -r '.[] | [.name, .type, (.url // "-"), (.download_url // "-")] | @csv' 2>&1)
+        done
     done
 }
 
