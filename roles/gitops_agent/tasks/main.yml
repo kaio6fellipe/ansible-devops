@@ -53,6 +53,14 @@
     mode: '0644'
     owner: root
 
+- name: Ensure that .vault_password_gitops_file exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/.vault_password_gitops_file
+    dest: /etc/ansible/.vault_password_gitops_file
+    mode: '0644'
+    owner: root
+
 - name: Ensure that inventory.localhost exists
   become: true
   ansible.builtin.template:
