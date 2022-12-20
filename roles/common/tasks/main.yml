@@ -11,4 +11,9 @@
   import_tasks: sudoers_template.yaml
 
 - name: Allow access to users in dict
-  import_tasks: admin_users.yaml
+  loop: "{{ admin_users }}"
+  include_tasks: admin_users.yaml
+  vars:
+    user: "{{ item.user }}"
+    pub_rsa: "{{ item.pub_rsa }}"
+
