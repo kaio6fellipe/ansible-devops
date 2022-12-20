@@ -12,3 +12,5 @@ admin_users:
     pub_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAaheauheuah"
   - user: teste-2
     pub_rsa: "ssh-rsa teste-2"
+  - user: teste-3
+    pub_rsa: "teste3"
