@@ -10,3 +10,7 @@ admin_users:
     pub_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCe1OlP84h5VLlJOfORLTamV1JPOcZrkj3HzdrfFNGKfx/VKTRqoGAfgJIUUHEiDbr/5kratHC8PhO5Q1+HZ0uMtUhc/zddc5MovAHh1kzWpgVRio38N0OnLMoWX7dhYp192rD3GiDLo+xWW8TDjXcE4GgSjSFDXPncvQ6lzk5aXG0BRx38MQZn/r7g2Qqae7Ptgk3YSEyiO1oO1hqtb20TBDKfaMp2rXh6EygJpfReaPevJge6gf1I6RRb3+VA7xOX7vyV5cy9LRcutbNRtLDdRrHmiYqlOLEtFMadP6Zv76vovyBOTOy9wOdbPgPZtgFYjL6+wfqCKe07En+eM/bf9zJjNoRRjuQUVuNkD1V13VMm/uwT5oIzuZEwnA+xFGF+Wa92atiuidmKF4Se6nR7cEQrlszvwdRcbOeeuEwMl2UOfIUGmxWu9lmCs4EEc761MSkFfKw8FPBNLlTOAzoXcIyqSQXO+q2/eQRcUbJhL+g+w6W79TDXkKCN1XgoE3U= kaio-fellipe\n" # noqa: yaml[line-length]
   - user: teste-1
     pub_rsa: "ssh-rsa AAAAB3NzaC1yc2EAAAADAaheauheuah"
+  - user: teste-2
+    pub_rsa: "ssh-rsa teste-2"
+  - user: teste-3
+    pub_rsa: "teste3"
