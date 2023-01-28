@@ -12,7 +12,7 @@
 This repository manage the configuration present in every machine of my platform (In creation) with a different approach of Ansible usage, using it in a "GitOps" flow with a pipeline linked to an "Ansible Controller" in AWS. Infrastructure bootstrap and management is being realized in my [terraform-devops](https://github.com/kaio6fellipe/terraform-devops) repository.
 
 So basically this would be the flow that the code in this repository goes through:
-- GitHub 
+- GitHub
 - Build and Package (GitActions) 
 - Upload to S3 
 - CodePipeline ([aws folder](https://github.com/kaio6fellipe/ansible-devops/tree/development/aws/scripts))
@@ -27,6 +27,7 @@ So basically this would be the flow that the code in this repository goes throug
 - [x] Grafana Mimir config role (Testing)
 - [x] Dynamic inventory based on AWS tags
 - [x] SonarQube coverage
+- [x] Granular GitOps Agent for Ansible
 ### Things that will be included (or not):
 - [ ] GoTeleport config role (maybe not)
 - [ ] Grafana Tempo config role

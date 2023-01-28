@@ -1,0 +1,86 @@
+---
+
+# - name: Amazon Linux Extras install epel
+#   become: true
+#   command: sudo amazon-linux-extras install epel -y # noqa: no-changed-when
+#
+# - name: Install Ansible
+#   become: true
+#   yum:
+#     name:
+#       - ansible
+
+- name: Install Ansible with pip3
+  become: true
+  ansible.builtin.pip:
+    name: ansible
+    executable: pip3
+
+- name: Ensure /etc/ansible/[inventory, inventory/group_vars, inventory/group_vars/all, roles, tmp, tmp/gitops_agent] exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}" # noqa: no-loop-var-prefix
+    state: directory
+    mode: '0644'
+    owner: root
+  with_items:
+    - "/etc/ansible/"
+    - "/etc/ansible/inventory/"
+    - "/etc/ansible/inventory/group_vars/"
+    - "/etc/ansible/inventory/group_vars/all/"
+    - "/etc/ansible/roles/"
+    - "/etc/ansible/tmp/"
+    - "/etc/ansible/tmp/gitops_agent/"
+
+- name: Ensure that gitops_agent.sh exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/gitops_agent.sh
+    dest: /etc/ansible/gitops_agent.sh
+    mode: '0644'
+    owner: root
+
+- name: Changing permissions of /etc/ansible/gitops_agent.sh, adding "+x"
+  ansible.builtin.file:
+    dest: /etc/ansible/gitops_agent.sh
+    mode: a+x
+
+- name: Ensure that ansible.cfg exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/ansible.cfg
+    dest: /etc/ansible/ansible.cfg
+    mode: '0644'
+    owner: root
+
+- name: Ensure that .vault_password_gitops_file exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/.vault_password_gitops_file
+    dest: /etc/ansible/.vault_password_gitops_file
+    mode: '0644'
+    owner: root
+
+- name: Ensure that inventory.localhost exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/inventory/inventory.localhost
+    dest: /etc/ansible/inventory/inventory.localhost
+    mode: '0644'
+    owner: root
+
+- name: Ensure that all.yml exists
+  become: true
+  ansible.builtin.template:
+    src: etc/ansible/all.yml
+    dest: /etc/ansible/all.yml
+    mode: '0644'
+    owner: root
+
+- name: Ensure that crontab exists and its managed by Ansible
+  become: true
+  ansible.builtin.template:
+    src: etc/crontab
+    dest: /etc/crontab
+    mode: '0644'
+    owner: root
