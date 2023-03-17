@@ -34,10 +34,10 @@ BASE_API_CALL=${API_HEADER}${BASE_URL}
 
 function_get_role_repo_content () {
     for ROLE in "${ROLE_REPO_PATH[@]}"; do
-        URL_ROLE=$(echo $ROLE | cut -c2- | sed 's/\//\%2F/g' )
+        URL_ROLE=$(echo $ROLE | cut -c2- | sed 's/\//\%2F/g')
         API_CALL=$(echo ${BASE_API_CALL}'/tree'${BRANCH}'&recursive=false&per_page=50&path='${URL_ROLE}'')
         RAW_OUTPUT=$(${API_CALL})
-        ROLE_NAME=$(echo $ROLE | sed 's|.*\/||' )
+        ROLE_NAME=$(echo $ROLE | sed 's|.*\/||')
         BASE_DIR=${GITOPS_TEMP_DIR}'/roles/'${ROLE_NAME}
         mkdir -p ${BASE_DIR}
         echo -e $RAW_OUTPUT | ${JQ} -r '.[] | [.name, .type, .path] | @csv' 2>&1 | while IFS=, read -r raw_name raw_type raw_path
@@ -64,7 +64,7 @@ function_scrap_dir () {
     CURRENT_DIR="$3"
     mkdir -p ${CURRENT_DIR}/${DIR_NAME}
     NEW_CURRENT_DIR="${CURRENT_DIR}/${DIR_NAME}"
-    URL_DIR_PATH=$(echo $DIR_PATH | sed 's/\//\%2F/g' )
+    URL_DIR_PATH=$(echo $DIR_PATH | sed 's/\//\%2F/g')
     API_CALL=$(echo ${BASE_API_CALL}'/tree'${BRANCH}'&recursive=false&per_page=50&path='${URL_DIR_PATH}'')
     RAW_OUTPUT=$(${API_CALL})
     echo -e $RAW_OUTPUT | ${JQ} -r '.[] | [.name, .type, .path] | @csv' 2>&1 | while IFS=, read -r raw_name raw_type raw_path
@@ -87,46 +87,47 @@ function_download_file () {
     FILE_PATH="$1"
     FILE_NAME="$2"
     CURRENT_DIR="$3"
-    URL_PATH=$( echo $FILE_PATH | sed 's/\//\%2F/g' )
+    URL_PATH=$(echo $FILE_PATH | sed 's/\//\%2F/g')
     FILE_OUTPUT=$(${BASE_API_CALL}'/files/'${URL_PATH}${BRANCH})
     echo -e $FILE_OUTPUT | ${JQ} -r '. | [.content] | @csv' 2>&1 | cut -d '"' -f 2 | base64 --decode > ${CURRENT_DIR}/${FILE_NAME}
 }
 
-#TO-DO
 function_get_var_file_content () {
-    for file in "${VAR_FILES_PATH[@]}"; do
-        RAW_OUTPUT=$(${API_CALL}${file}${BRANCH})
-        download_url=$(echo ${RAW_OUTPUT} | ${JQ} ".download_url" | cut -d '"' -f 2)
-        file_name=$(echo ${RAW_OUTPUT} | ${JQ} ".name" | cut -d '"' -f 2)
-        mkdir -p ${GITOPS_TEMP_DIR}/group_vars/all
-        ${CURL} ${download_url} > ${GITOPS_TEMP_DIR}/group_vars/all/${file_name} 
+    for FILE in "${VAR_FILES_PATH[@]}"; do
+        URL_PATH=$(echo $FILE | sed 's/\//\%2F/g')
+        FILE_OUTPUT=$(${BASE_API_CALL}'/files/'${URL_PATH}${BRANCH})
+        FILE_NAME=$(echo $FILE | sed 's|.*\/||')
+        mkdir -p ${GITOPS_TEMP_DIR}/inventory/group_vars/all
+        echo -e $FILE_OUTPUT | ${JQ} -r '. | [.content] | @csv' 2>&1 | cut -d '"' -f 2 | base64 --decode > ${GITOPS_TEMP_DIR}/inventory/group_vars/all/${FILE_NAME}
     done
 }
 
-#TO-DO
 function_diff_replace_content () {
-    EXEC_GROUP_VARS=${ANSIBLE_DIR}/inventory
+    mkdir -p ${ANSIBLE_DIR}/inventory
+    mkdir -p ${ANSIBLE_DIR}/inventory/group_vars
+    mkdir -p ${ANSIBLE_DIR}/inventory/group_vars/all
+
+    EXEC_GROUP_VARS=${ANSIBLE_DIR}
     EXEC_ROLES=${ANSIBLE_DIR}
-    REF_GROUP_VARS=${GITOPS_TEMP_DIR}/group_vars
+    REF_GROUP_VARS=${GITOPS_TEMP_DIR}/inventory
     REF_ROLES=${GITOPS_TEMP_DIR}/roles
 
-    VARS_DIFF=$(diff --brief --recursive $REF_GROUP_VARS $EXEC_GROUP_VARS/group_vars | wc -l)
-    ROLES_DIFF=$(diff --brief --recursive $REF_ROLES $EXEC_ROLES/roles | wc -l)
+    VARS_DIFF=$(diff --brief --recursive $REF_GROUP_VARS/group_vars $EXEC_GROUP_VARS/inventory/group_vars > /dev/null && echo "0" || echo "1") 
+    ROLES_DIFF=$(diff --brief --recursive $REF_ROLES $EXEC_ROLES/roles > /dev/null && echo "0" || echo "1")
     DIFF=$(($VARS_DIFF + $ROLES_DIFF))
 
     if [ $DIFF != 0 ]; then
         cp -r $REF_GROUP_VARS $EXEC_GROUP_VARS
         cp -r $REF_ROLES $EXEC_ROLES
         # Ansible commands to be executed if a diff was detected
-        {% for role in monitored_roles %}
-        python3 $(which ansible-playbook) -i inventory/inventory.localhost all.yml --tags {{ role.tag }}
-        {% endfor                      %}
-
+        # {% for role in monitored_roles %}
+        # python3 $(which ansible-playbook) -i inventory/inventory.localhost all.yml --tags {{ role.tag }}
+        # {% endfor                      %}
     else
         echo "No diff found"
     fi 
 }
 
 function_get_role_repo_content
-#function_get_var_file_content
-#function_diff_replace_content
+function_get_var_file_content
+function_diff_replace_content
