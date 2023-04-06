@@ -5,12 +5,13 @@ base_info:
   branch: development
 
 monitored_roles:
-  - name: grafana_agent
-    tag: grafana_agent
+  - name: common
+    tag: common
     path: /roles/common
 
 extra_var_files:
   - name: global_dev_vars.yaml
     path: /group_vars/dev/global_dev_vars.yaml
 
-vault_password: some_encrypted_password_with_ansible_vault
+vault_password: "{{ gitops_vault_password }}"
+vault_personal_access_token: "{{ gitlab_personal_access_token }}"

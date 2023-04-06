@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  become: true
+  connection: local
+
+  vars_files:
+{% for var_file in extra_var_files %}
+    - /etc/ansible/inventory/group_vars/all/{{ var_file.name }}
+{% endfor                          %}
+
+  roles:
+{% for role in monitored_roles %}
+    - {role: {{role.name}}, tags: {{role.tag}}}
+{% endfor                      %}

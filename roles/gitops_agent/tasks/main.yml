@@ -13,7 +13,7 @@
 - name: Install Ansible with pip3
   become: true
   ansible.builtin.pip:
-    name: ansible
+    name: ansible=="{{ansible_version}}"
     executable: pip3
 
 - name: Ensure /etc/ansible/[inventory, inventory/group_vars, inventory/group_vars/all, roles, tmp, tmp/gitops_agent] exists
@@ -35,7 +35,7 @@
 - name: Ensure that gitops_agent.sh exists
   become: true
   ansible.builtin.template:
-    src: etc/ansible/gitops_agent.sh
+    src: etc/ansible/gitops_agent.sh.j2
     dest: /etc/ansible/gitops_agent.sh
     mode: '0644'
     owner: root

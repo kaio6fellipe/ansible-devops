@@ -1,0 +1,61 @@
+---
+- name: Install Ansible with pip3
+  become: true
+  ansible.builtin.pip:
+    name: ansible==5.10.0
+    executable: pip3
+
+- name: Ensure /etc/ansible/[inventory, inventory/group_vars, inventory/group_vars/all, roles, tmp, tmp/gitops_agent] exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0644'
+    owner: root
+  with_items:
+    - "/etc/ansible/"
+    - "/etc/ansible/inventory/"
+    - "/etc/ansible/inventory/group_vars/"
+    - "/etc/ansible/inventory/group_vars/all/"
+    - "/etc/ansible/roles/"
+    - "/etc/ansible/tmp/"
+    - "/etc/ansible/tmp/gitops_agent/"
+
+- name: Copy files (templates)
+  become: true
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    mode: '0644'
+    owner: root
+  with_items:
+    - "etc/ansible/gitops_agent.sh"
+    - "etc/ansible/ansible.cfg"
+    - "etc/ansible/.gitops_vault_password_file"
+    - "etc/ansible/inventory/inventory.localhost"
+    - "etc/ansible/all.yml"
+
+- name: Changing permissions of /etc/ansible/gitops_agent.sh, adding "+x"
+  ansible.builtin.file:
+    dest: /etc/ansible/gitops_agent.sh
+    mode: a+x
+
+- name: Copy systemd units
+  become: true
+  ansible.builtin.copy:
+    src: "etc/systemd/system/{{ item.unit }}"
+    dest: "/etc/systemd/system/{{ item.unit }}"
+    mode: "{{ item.mode }}"
+    owner: root
+  register: systemd_units
+  loop:
+    - {unit: gitops_agent.service, mode: '0644'}
+    - {unit: gitops_agent.timer, mode: '0644'}
+
+- name: Ensure systemd units
+  ansible.builtin.systemd:
+    name: "{{ item.item.unit }}"
+    enabled: true
+    daemon_reload: true
+    state: "{{ (item.changed) | ternary('restarted', 'started') }}"
+  with_items: "{{ systemd_units.results }}"

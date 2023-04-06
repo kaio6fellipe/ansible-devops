@@ -1,0 +1,7 @@
+[Unit]
+Description=GitOps Agent Service
+ConditionACPower=true
+
+[Service]
+Type=oneshot
+ExecStart=/etc/ansible/gitops_agent.sh
