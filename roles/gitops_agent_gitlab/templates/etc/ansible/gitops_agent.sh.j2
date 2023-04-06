@@ -3,12 +3,12 @@
 
 set -o errexit
 set -o nounset
-set -x
+# set -x # Uncomment to enable debug
 
-PROJECT_ID="{{ base_info.owner }}"
+PROJECT_ID="{{ base_info.project_id }}"
 BRANCH="?ref={{ base_info.branch }}"
 PAT_TOKEN="{{ vault_personal_access_token }}"
-BASE_URL=https://"{{ gitlab_domain }}"/api/v4/projects/${PROJECT_ID}/repository
+BASE_URL=https://"{{ base_info.gitlab_domain }}"/api/v4/projects/${PROJECT_ID}/repository
 ANSIBLE_DIR="/etc/ansible"
 GITOPS_TEMP_DIR="${ANSIBLE_DIR}/tmp/gitops_agent"
 
@@ -17,6 +17,7 @@ declare -a ROLE_REPO_PATH=(
     "{{ role.path }}"
 {% endfor                      %}
 )
+
 declare -a VAR_FILES_PATH=(
 {% for var_file in extra_var_files %}
     "{{ var_file.path }}"
@@ -120,9 +121,9 @@ function_diff_replace_content () {
         cp -r $REF_GROUP_VARS $EXEC_GROUP_VARS
         cp -r $REF_ROLES $EXEC_ROLES
         # Ansible commands to be executed if a diff was detected
-        # {% for role in monitored_roles %}
-        # python3 $(which ansible-playbook) -i inventory/inventory.localhost all.yml --tags {{ role.tag }}
-        # {% endfor                      %}
+        {% for role in monitored_roles %}
+        python3 $(which ansible-playbook) -i inventory/inventory.localhost all.yml --tags {{ role.tag }}
+        {% endfor                      %}
     else
         echo "No diff found"
     fi 

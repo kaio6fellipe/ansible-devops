@@ -1,0 +1,9 @@
+[Unit]
+Description=Hourly execute GitOps Agent from Genesis
+
+[Timer]
+OnUnitActiveSec=30m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

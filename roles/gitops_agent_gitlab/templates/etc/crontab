@@ -1,6 +1,0 @@
-# Managed by Ansible GitOps Agent
-SHELL=/bin/bash
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-MAILTO=root
-# Command that will run the scrape in github repository and execute the ansible command if a diff is detected
-*/5 * * * * /etc/ansible/gitops_agent.sh

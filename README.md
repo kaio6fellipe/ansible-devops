@@ -19,6 +19,8 @@ So basically this would be the flow that the code in this repository goes throug
   - Ansible Controller
     - After that, all playbooks will be executed, ensuring that all configs present in this repo will be provisioned in all machines present in the dynamic inventory
 
+![](./how-it-works.drawio.svg)
+
 ### Things that are already included:
 - [x] Common role to deal with user management and everything that all machines must have in common
 - [x] Grafana Dashboards config role

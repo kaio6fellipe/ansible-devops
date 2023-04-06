@@ -1,25 +1,14 @@
 ---
-
-# - name: Amazon Linux Extras install epel
-#   become: true
-#   command: sudo amazon-linux-extras install epel -y # noqa: no-changed-when
-#
-# - name: Install Ansible
-#   become: true
-#   yum:
-#     name:
-#       - ansible
-
 - name: Install Ansible with pip3
   become: true
   ansible.builtin.pip:
-    name: ansible
+    name: ansible==5.10.0
     executable: pip3
 
 - name: Ensure /etc/ansible/[inventory, inventory/group_vars, inventory/group_vars/all, roles, tmp, tmp/gitops_agent] exists
   become: true
   ansible.builtin.file:
-    path: "{{ item }}" # noqa: no-loop-var-prefix
+    path: "{{ item }}"
     state: directory
     mode: '0644'
     owner: root
@@ -32,55 +21,41 @@
     - "/etc/ansible/tmp/"
     - "/etc/ansible/tmp/gitops_agent/"
 
-- name: Ensure that gitops_agent.sh exists
+- name: Copy files (templates)
   become: true
   ansible.builtin.template:
-    src: etc/ansible/gitops_agent.sh
-    dest: /etc/ansible/gitops_agent.sh
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
     mode: '0644'
     owner: root
+  with_items:
+    - "etc/ansible/gitops_agent.sh"
+    - "etc/ansible/ansible.cfg"
+    - "etc/ansible/.gitops_vault_password_file"
+    - "etc/ansible/inventory/inventory.localhost"
+    - "etc/ansible/all.yml"
 
 - name: Changing permissions of /etc/ansible/gitops_agent.sh, adding "+x"
   ansible.builtin.file:
     dest: /etc/ansible/gitops_agent.sh
     mode: a+x
 
-- name: Ensure that ansible.cfg exists
+- name: Copy systemd units
   become: true
-  ansible.builtin.template:
-    src: etc/ansible/ansible.cfg
-    dest: /etc/ansible/ansible.cfg
-    mode: '0644'
+  ansible.builtin.copy:
+    src: "etc/systemd/system/{{ item.unit }}"
+    dest: "/etc/systemd/system/{{ item.unit }}"
+    mode: "{{ item.mode }}"
     owner: root
+  register: systemd_units
+  loop:
+    - {unit: gitops_agent.service, mode: '0644'}
+    - {unit: gitops_agent.timer, mode: '0644'}
 
-- name: Ensure that .vault_password_gitops_file exists
-  become: true
-  ansible.builtin.template:
-    src: etc/ansible/.vault_password_gitops_file
-    dest: /etc/ansible/.vault_password_gitops_file
-    mode: '0644'
-    owner: root
-
-- name: Ensure that inventory.localhost exists
-  become: true
-  ansible.builtin.template:
-    src: etc/ansible/inventory/inventory.localhost
-    dest: /etc/ansible/inventory/inventory.localhost
-    mode: '0644'
-    owner: root
-
-- name: Ensure that all.yml exists
-  become: true
-  ansible.builtin.template:
-    src: etc/ansible/all.yml
-    dest: /etc/ansible/all.yml
-    mode: '0644'
-    owner: root
-
-- name: Ensure that crontab exists and its managed by Ansible
-  become: true
-  ansible.builtin.template:
-    src: etc/crontab
-    dest: /etc/crontab
-    mode: '0644'
-    owner: root
+- name: Ensure systemd units
+  ansible.builtin.systemd:
+    name: "{{ item.item.unit }}"
+    enabled: true
+    daemon_reload: true
+    state: "{{ (item.changed) | ternary('restarted', 'started') }}"
+  with_items: "{{ systemd_units.results }}"
