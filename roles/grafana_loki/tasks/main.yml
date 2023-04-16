@@ -47,7 +47,7 @@
 
 - name: Setup Loki template config file on /etc/loki
   ansible.builtin.template:
-    src: loki-local-config.yaml
+    src: loki-local-config.yaml.j2
     dest: /etc/loki/loki-local-config.yaml
     owner: loki
     group: root
@@ -57,7 +57,7 @@
 
 - name: Setup Loki Service on /etc/systemd/system
   ansible.builtin.template:
-    src: loki.service
+    src: loki.service.j2
     dest: /etc/systemd/system/loki.service
     owner: loki
     group: root

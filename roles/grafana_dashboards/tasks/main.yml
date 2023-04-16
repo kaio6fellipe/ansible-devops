@@ -18,7 +18,7 @@
 
 - name: Replace grafana.ini with template
   ansible.builtin.template:
-    src: grafana.ini
+    src: grafana.ini.j2
     dest: /etc/grafana/grafana.ini
     owner: root
     group: grafana

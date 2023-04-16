@@ -63,7 +63,7 @@
 
 - name: Setup Grafana agent template config file on /etc/grafana_agent
   ansible.builtin.template:
-    src: grafana-agent-config.yaml
+    src: grafana-agent-config.yaml.j2
     dest: /etc/grafana_agent/grafana-agent-config.yaml
     owner: grafana_agent
     group: root
@@ -73,7 +73,7 @@
 
 - name: Setup Grafana agent Service on /etc/systemd/system
   ansible.builtin.template:
-    src: grafana_agent.service
+    src: grafana_agent.service.j2
     dest: /etc/systemd/system/grafana_agent.service
     owner: grafana_agent
     group: root

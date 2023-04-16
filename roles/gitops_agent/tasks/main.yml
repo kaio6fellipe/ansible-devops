@@ -48,7 +48,7 @@
 - name: Ensure that ansible.cfg exists
   become: true
   ansible.builtin.template:
-    src: etc/ansible/ansible.cfg
+    src: etc/ansible/ansible.cfg.j2
     dest: /etc/ansible/ansible.cfg
     mode: '0644'
     owner: root
@@ -56,7 +56,7 @@
 - name: Ensure that .vault_password_gitops_file exists
   become: true
   ansible.builtin.template:
-    src: etc/ansible/.vault_password_gitops_file
+    src: etc/ansible/.vault_password_gitops_file.j2
     dest: /etc/ansible/.vault_password_gitops_file
     mode: '0644'
     owner: root
@@ -64,7 +64,7 @@
 - name: Ensure that inventory.localhost exists
   become: true
   ansible.builtin.template:
-    src: etc/ansible/inventory/inventory.localhost
+    src: etc/ansible/inventory/inventory.localhost.j2
     dest: /etc/ansible/inventory/inventory.localhost
     mode: '0644'
     owner: root
@@ -72,7 +72,7 @@
 - name: Ensure that all.yml exists
   become: true
   ansible.builtin.template:
-    src: etc/ansible/all.yml
+    src: etc/ansible/all.yml.j2
     dest: /etc/ansible/all.yml
     mode: '0644'
     owner: root
@@ -80,7 +80,7 @@
 - name: Ensure that crontab exists and its managed by Ansible
   become: true
   ansible.builtin.template:
-    src: etc/crontab
+    src: etc/crontab.j2
     dest: /etc/crontab
     mode: '0644'
     owner: root

@@ -47,7 +47,7 @@
 
 - name: Setup Mimir template config file on /etc/mimir
   ansible.builtin.template:
-    src: mimir-local-config.yaml
+    src: mimir-local-config.yaml.j2
     dest: /etc/mimir/mimir-local-config.yaml
     owner: mimir
     group: root
@@ -57,7 +57,7 @@
 
 - name: Setup Mimir Service on /etc/systemd/system
   ansible.builtin.template:
-    src: mimir.service
+    src: mimir.service.j2
     dest: /etc/systemd/system/mimir.service
     owner: mimir
     group: root
