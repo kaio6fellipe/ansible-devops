@@ -44,8 +44,11 @@ metrics:
         - job_name: agent
           static_configs:
             - targets: ["127.0.0.1:12345"]
-      remote_write:
-        - url: http://mimir-alb.{{ deploy_environment }}.private.ktech-br.com/api/v1/push
+    - name: node_exporter
+      scrape_configs:
+        - job_name: node_exporter
+          static_configs:
+            - targets: ["127.0.0.1:9100"]
 
 integrations:
   agent:
